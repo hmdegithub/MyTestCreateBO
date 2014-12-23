@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -15,14 +17,12 @@ import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import cn.hm.quickbo.conf.AWSConfigure;
-import cn.hm.quickbo.dbtable.util.HttpTablePaser;
+import cn.hm.quickbo.dbtable.util.HttpLogin;
 
 import com.jgoodies.forms.factories.FormFactory;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 public class SettingDialog extends JDialog {
 
@@ -66,7 +66,7 @@ public class SettingDialog extends JDialog {
         if (!confAvailable && !SettingDialog.this.isVisible()) {
           recoverdHistoryRecord();
         }
-        confAvailable=false;
+        confAvailable = false;
       }
     });
 
@@ -125,7 +125,7 @@ public class SettingDialog extends JDialog {
             conf.setPassword(textField_3.getText());
 
             // 测试连接.
-            if (HttpTablePaser.testConnection()) {
+            if (HttpLogin.testLogin()) {
               // 成功执行.
               SettingDialog.this.setVisible(false);
               confAvailable = true;

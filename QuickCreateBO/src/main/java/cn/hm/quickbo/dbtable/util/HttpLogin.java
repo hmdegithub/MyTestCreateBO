@@ -7,9 +7,27 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import cn.hm.quickbo.conf.AWSConfigure;
 import cn.hm.quickbo.util.HttpUtil;
 
 public class HttpLogin {
+
+  /**
+   * 测试连接，并设置Sid.
+   * 
+   * @return
+   */
+  public static boolean testLogin() {
+    try {
+      AWSConfigure conf = AWSConfigure.getInstance();
+      String sid = HttpLogin.getSid(conf.getAwsurl(), conf.getUsername(), conf.getPassword());
+      conf.setSid(sid);
+      return true;
+    } catch (IOException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
 
   /**
    * 从登陆网页抓取sid

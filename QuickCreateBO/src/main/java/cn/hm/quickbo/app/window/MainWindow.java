@@ -34,7 +34,7 @@ import cn.hm.quickbo.app.dialog.SettingDialog;
 import cn.hm.quickbo.app.mess.PutMessage;
 import cn.hm.quickbo.conf.AppConfigure;
 import cn.hm.quickbo.dbtable.service.impl.AWSQuickTableGeneratorImpl;
-import cn.hm.quickbo.dbtable.util.HttpTablePaser;
+import cn.hm.quickbo.dbtable.util.HttpLogin;
 import cn.hm.quickbo.util.ValidateUtil;
 
 import com.jgoodies.forms.factories.FormFactory;
@@ -191,7 +191,7 @@ public class MainWindow implements PutMessage {
 
         textArea.setText("");
         textArea.append("开始检测配置...\n");
-        if (!HttpTablePaser.testConnection()) {
+        if (!HttpLogin.testLogin()) {
           JOptionPane.showMessageDialog(frmv, "请先配置!");
           settingDialog.setModal(true);
           settingDialog.setVisible(true);

@@ -1,10 +1,8 @@
 package cn.hm.quickbo.dbtable.util;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import cn.hm.quickbo.conf.AWSConfigure;
 import cn.hm.quickbo.dbtable.domain.Table;
 import cn.hm.quickbo.dbtable.domain.TableField;
 
@@ -16,28 +14,10 @@ import cn.hm.quickbo.dbtable.domain.TableField;
  */
 public final class HttpTablePaser {
 
-  private static AWSConfigure conf = AWSConfigure.getInstance();
-
   /**
    * 私有构造.
    */
   private HttpTablePaser() {
-  }
-
-  /**
-   * 测试连接，并设置Sid.
-   * 
-   * @return
-   */
-  public static boolean testConnection() {
-    try {
-      String sid = HttpLogin.getSid(conf.getAwsurl(), conf.getUsername(), conf.getPassword());
-      conf.setSid(sid);
-      return true;
-    } catch (IOException e) {
-      e.printStackTrace();
-      return false;
-    }
   }
 
   /**

@@ -7,7 +7,7 @@ import org.junit.Test;
 import cn.hm.quickbo.conf.AWSConfigure;
 import cn.hm.quickbo.dbtable.service.impl.AWSQuickTableGeneratorImpl;
 import cn.hm.quickbo.dbtable.service.impl.AWSTableGeneratorImpl;
-import cn.hm.quickbo.dbtable.util.HttpTablePaser;
+import cn.hm.quickbo.dbtable.util.HttpLogin;
 
 public class AWSQuickTableGeneratorTest {
 
@@ -19,7 +19,7 @@ public class AWSQuickTableGeneratorTest {
     config.setAwsurl("localhost:8088/portal");
     config.setUsername("admin");
     config.setPassword("123456");
-    HttpTablePaser.testConnection();
+    HttpLogin.testLogin();
   }
 
   @Before
