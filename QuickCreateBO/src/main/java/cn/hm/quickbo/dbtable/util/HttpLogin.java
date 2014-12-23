@@ -21,8 +21,12 @@ public class HttpLogin {
     try {
       AWSConfigure conf = AWSConfigure.getInstance();
       String sid = HttpLogin.getSid(conf.getAwsurl(), conf.getUsername(), conf.getPassword());
-      conf.setSid(sid);
-      return true;
+      if (sid == null) {
+        return false;
+      } else {
+        conf.setSid(sid);
+        return true;
+      }
     } catch (IOException e) {
       e.printStackTrace();
       return false;
@@ -80,10 +84,11 @@ public class HttpLogin {
         }
 
         // 未找到SID的值
-        if (index == -1)
-          throw new RuntimeException("sid获取失败! 返回内容" + sb.substring(0, sb.length() > 100 ? 100 : sb.length()) + (sb.length() > 100 ? "..." : ""));
-
-        return sid;
+        if (index == -1) {
+          return null;
+        } else {
+          return sid;
+        }
       } finally {
         openConnection.getInputStream().close();
       }
