@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -19,14 +20,11 @@ import cn.hm.quickbo.dbtable.domain.Table;
 import cn.hm.quickbo.dbtable.reader.TableReader;
 import cn.hm.quickbo.dbtable.reader.impl.ExcelSAXTableReader;
 import cn.hm.quickbo.dbtable.service.TableGenerator;
-import cn.hm.quickbo.dbtable.util.HttpLogin;
 import cn.hm.quickbo.dbtable.util.HttpTablePaser;
 import cn.hm.quickbo.util.HttpUtil;
 import cn.hm.quickbo.util.ThreadUtil;
 
 public class AWSQuickTableGeneratorImpl implements TableGenerator, SetMessage {
-
-  // private static Logger log = Logger.getLogger(AWSTableGeneratorImpl.class);
 
   private PutMessage putMessage = null;
   private AWSConfigure conf = AWSConfigure.getInstance();
@@ -64,22 +62,7 @@ public class AWSQuickTableGeneratorImpl implements TableGenerator, SetMessage {
 
   @Override
   public void saveTable(Table table) {
-    try {
-      // 先获取SID
-      String sid = HttpLogin.getSid(conf.getAwsurl(), conf.getUsername(), conf.getPassword());
-      // Http连接
-      URL url = new URL("http://" + conf.getAwsurl() + "/ajax");
-      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-      String param = HttpTablePaser.createTableAndTableRequestParam(sid, table);
-      // 发送请求
-      HttpUtil.sendPostRequest(conn, param);
-      // 读取响应参数.
-      String response = HttpUtil.readResponse(conn);
-      // 显示消息
-      System.out.println(response);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    saveTables(Arrays.asList(table));
   }
 
   @Override
@@ -94,21 +77,16 @@ public class AWSQuickTableGeneratorImpl implements TableGenerator, SetMessage {
 
     ExecutorService threadPool = ThreadUtil.getThreadPool();
     threadSingal = new CountDownLatch(list.size());
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < ThreadUtil.POOL_SIZE; i++) {
       threadPool.execute(new Runnable() {
 
-        @Override
         public void run() {
-          try {
-            while (hasNext()) {
-              try{
+          while (hasNext()) {
+            try {
               createTable(next());
-              }finally {
-                threadSingal.countDown();
-              }
+            } finally {
+              threadSingal.countDown();
             }
-          } catch (IOException e) {
-            throw new RuntimeException(e);
           }
         }
       });
@@ -118,6 +96,7 @@ public class AWSQuickTableGeneratorImpl implements TableGenerator, SetMessage {
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }
+    threadPool.shutdown();
   }
 
   public Table next() {
@@ -131,9 +110,10 @@ public class AWSQuickTableGeneratorImpl implements TableGenerator, SetMessage {
     }
   }
 
-  private void createTable(Table table) throws IOException, UnsupportedEncodingException {
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+  private void createTable(Table table) {
+    HttpURLConnection conn = null;
     try {
+      conn = (HttpURLConnection) url.openConnection();
       // 参数分析
       String param = HttpTablePaser.createTableAndTableRequestParam(conf.getSid(), table);
 
@@ -141,20 +121,20 @@ public class AWSQuickTableGeneratorImpl implements TableGenerator, SetMessage {
       HttpUtil.sendPostRequest(conn, param);
 
       BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-      synchronized (AWSQuickTableGeneratorImpl.this) {
+      synchronized (putMessage) {
         String readLine = bufferedReader.readLine();
         while (readLine != null) {
           // 显示消息
-          // log.info(table.getGroupName() + " -- " + table.getTableName() +
-          // " -- " + table.getTableTitle() + " -- " + readLine);
-          if (putMessage != null)
+          if (putMessage != null) {
             sendMessage(table.getGroupName() + " -- " + table.getTableName() + " -- " + table.getTableTitle() + " -- " + readLine);
-
+          }
           readLine = bufferedReader.readLine();
         }
       }
-
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     } finally {
       conn.disconnect();
     }

@@ -5,13 +5,13 @@ import java.util.concurrent.Executors;
 
 public class ThreadUtil {
 
+  public static final int POOL_SIZE = 3;
+
   private ThreadUtil() {
   }
 
-  private static ExecutorService executorService = Executors.newFixedThreadPool(3);
-
   public static ExecutorService getThreadPool() {
-    return executorService;
+    return Executors.newFixedThreadPool(POOL_SIZE);
   }
 
 }
