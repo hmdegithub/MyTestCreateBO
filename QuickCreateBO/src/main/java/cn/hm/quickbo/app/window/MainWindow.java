@@ -238,7 +238,7 @@ public class MainWindow implements PutMessage {
         String path = System.getProperty("user.dir");
         // 导出模板
         try {
-          Runtime.getRuntime().exec("cmd /c start " + path + "\\样例.xlsx");
+          Runtime.getRuntime().exec("cmd /c start " + path + "\\example.xlsx");
         } catch (IOException e1) {
           e1.printStackTrace();
           JOptionPane.showMessageDialog(frmv, "模板打开失败!!");
