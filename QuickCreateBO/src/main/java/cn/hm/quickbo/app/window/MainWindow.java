@@ -13,6 +13,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -30,10 +32,14 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileFilter;
 
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.stereotype.Controller;
+
 import cn.hm.quickbo.app.dialog.SettingDialog;
 import cn.hm.quickbo.app.mess.PutMessage;
+import cn.hm.quickbo.app.mess.SetMessage;
 import cn.hm.quickbo.conf.AppConfigure;
-import cn.hm.quickbo.dbtable.service.impl.AWSQuickTableGeneratorImpl;
+import cn.hm.quickbo.dbtable.service.FileTableGenerator;
 import cn.hm.quickbo.dbtable.util.HttpLogin;
 import cn.hm.quickbo.util.ValidateUtil;
 
@@ -42,7 +48,8 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-public class MainWindow implements PutMessage {
+@Controller
+public class MainWindow {
 
   private JFrame frmv;
   private JTextArea textArea;
@@ -59,9 +66,8 @@ public class MainWindow implements PutMessage {
   private JSeparator separator;
   private SettingDialog settingDialog;
 
-  private AWSQuickTableGeneratorImpl generator = new AWSQuickTableGeneratorImpl();
-
-  private AppConfigure appConfig = AppConfigure.getInstance();
+  @Inject
+  private FileTableGenerator generator;
 
   /**
    * Launch the application.
@@ -70,11 +76,18 @@ public class MainWindow implements PutMessage {
     EventQueue.invokeLater(new Runnable() {
 
       public void run() {
+        ClassPathXmlApplicationContext context = null;
         try {
-          MainWindow window = new MainWindow();
+          context = new ClassPathXmlApplicationContext("applicationContext.xml");
+          MainWindow window = context.getBean(MainWindow.class);
           window.frmv.setVisible(true);
+          context.close();
         } catch (Exception e) {
           e.printStackTrace();
+        } finally {
+          if (context != null) {
+            context.close();
+          }
         }
       }
     });
@@ -129,6 +142,7 @@ public class MainWindow implements PutMessage {
       }
     });
 
+    AppConfigure appConfig = AppConfigure.getInstance();
     frmv.setTitle(appConfig.getAppName() + " " + appConfig.getVersion());
     frmv.setBounds(100, 100, 500, 490);
     frmv.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -175,8 +189,6 @@ public class MainWindow implements PutMessage {
     textField_1.setColumns(10);
     frmv.getContentPane().add(btnNewButton, "3, 3, left, default");
     settingDialog = new SettingDialog();
-
-    generator.setPutMessage(this);
 
     btnNewButton_1 = new JButton("\u5F00\u59CB\u5EFA\u8868");
     btnNewButton_1.addActionListener(new ActionListener() {
@@ -312,15 +324,26 @@ public class MainWindow implements PutMessage {
     mnNewMenu.add(menuItem_1);
   }
 
-  @Override
-  public void putMessage(String message) {
-    textArea.append(message);
-    textArea.append("\n");
-    textArea.select(textArea.getText().length(), textArea.getText().length());
+  @Inject
+  public void setGenerator(@Named("tableGenerator") FileTableGenerator generator) {
+    this.generator = generator;
   }
 
-  @Override
-  public void clearMessage() {
-    textArea.setText("");
+  @Inject
+  public void setSetMessage(@Named("tableGenerator") SetMessage setMessage) {
+    setMessage.setPutMessage(new PutMessage() {
+
+      @Override
+      public void putMessage(String message) {
+        textArea.append(message);
+        textArea.append("\n");
+        textArea.select(textArea.getText().length(), textArea.getText().length());
+      }
+      @Override
+      public void clearMessage() {
+        textArea.setText("");
+      }
+    });
   }
+
 }

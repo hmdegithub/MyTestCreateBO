@@ -59,6 +59,10 @@ public class ExcelSAXTableReader implements TableReader {
   private static final int FIELD_DEFAULT_COL = 5;
 
   private String filename;
+  
+  public ExcelSAXTableReader() {
+    super();
+  }
 
   public ExcelSAXTableReader(String filename) {
     super();

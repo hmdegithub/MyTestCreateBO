@@ -8,6 +8,10 @@ package cn.hm.quickbo.app.mess;
  */
 public interface SetMessage {
 
+  /**
+   * 设置消息推送.
+   * @param putMessage
+   */
   public void setPutMessage(PutMessage putMessage);
   
 }

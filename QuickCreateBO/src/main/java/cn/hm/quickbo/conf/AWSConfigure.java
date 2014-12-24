@@ -2,15 +2,18 @@ package cn.hm.quickbo.conf;
 
 import org.springframework.context.annotation.Configuration;
 
-@Configuration("conf")
+@Configuration
 public class AWSConfigure {
 
   AWSConfigure() {
   }
 
-  private static AWSConfigure config = new AWSConfigure();
+  private static AWSConfigure config;
 
-  public static AWSConfigure getInstance() {
+  public synchronized static AWSConfigure getInstance() {
+    if (config == null) {
+      config = new AWSConfigure();
+    }
     return config;
   }
 

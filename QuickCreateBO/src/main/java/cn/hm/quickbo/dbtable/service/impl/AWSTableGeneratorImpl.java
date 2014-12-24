@@ -15,12 +15,12 @@ import cn.hm.quickbo.conf.AWSConfigure;
 import cn.hm.quickbo.dbtable.domain.Table;
 import cn.hm.quickbo.dbtable.reader.TableReader;
 import cn.hm.quickbo.dbtable.reader.impl.ExcelSAXTableReader;
-import cn.hm.quickbo.dbtable.service.TableGenerator;
+import cn.hm.quickbo.dbtable.service.FileTableGenerator;
 import cn.hm.quickbo.dbtable.util.HttpLogin;
 import cn.hm.quickbo.dbtable.util.HttpTablePaser;
 import cn.hm.quickbo.util.HttpUtil;
 
-public class AWSTableGeneratorImpl implements TableGenerator, SetMessage {
+public class AWSTableGeneratorImpl implements FileTableGenerator, SetMessage {
 
   // private static Logger log = Logger.getLogger(AWSTableGeneratorImpl.class);
 

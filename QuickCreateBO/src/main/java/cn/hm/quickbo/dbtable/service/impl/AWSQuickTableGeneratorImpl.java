@@ -13,26 +13,29 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
+import javax.inject.Named;
+
 import cn.hm.quickbo.app.mess.PutMessage;
 import cn.hm.quickbo.app.mess.SetMessage;
 import cn.hm.quickbo.conf.AWSConfigure;
 import cn.hm.quickbo.dbtable.domain.Table;
 import cn.hm.quickbo.dbtable.reader.TableReader;
 import cn.hm.quickbo.dbtable.reader.impl.ExcelSAXTableReader;
-import cn.hm.quickbo.dbtable.service.TableGenerator;
+import cn.hm.quickbo.dbtable.service.FileTableGenerator;
 import cn.hm.quickbo.dbtable.util.HttpTablePaser;
 import cn.hm.quickbo.util.HttpUtil;
 import cn.hm.quickbo.util.ThreadUtil;
 
-public class AWSQuickTableGeneratorImpl implements TableGenerator, SetMessage {
+@Named("tableGenerator")
+public class AWSQuickTableGeneratorImpl implements FileTableGenerator, SetMessage {
 
   private PutMessage putMessage = null;
   private AWSConfigure conf = AWSConfigure.getInstance();
+  
   private TableReader reader;
   private URL url;
 
   private Iterator<Table> iterator;
-
   private CountDownLatch threadSingal;
 
   public void startCreate(String filepath) {
@@ -120,6 +123,9 @@ public class AWSQuickTableGeneratorImpl implements TableGenerator, SetMessage {
       // 发送请求
       HttpUtil.sendPostRequest(conn, param);
 
+      if(putMessage==null)
+        return ;
+      
       BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
       synchronized (putMessage) {
         String readLine = bufferedReader.readLine();

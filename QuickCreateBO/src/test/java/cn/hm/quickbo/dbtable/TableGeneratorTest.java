@@ -93,7 +93,8 @@ public class TableGeneratorTest {
       // 参数分析
       String param = HttpTablePaser.createTableAndTableRequestParam(sid, table);
       // 发送请求
-      String message = HttpUtil.sendPostRequestAndGetMessage(conn, param);
+      HttpUtil.sendPostRequest(conn, param);
+      String message = HttpUtil.readResponse(conn);
       System.out.println(message);
     } catch (IOException e) {
       e.printStackTrace();
