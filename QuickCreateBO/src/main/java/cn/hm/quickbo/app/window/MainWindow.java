@@ -52,26 +52,38 @@ import com.jgoodies.forms.layout.RowSpec;
 public class MainWindow {
 
   private JFrame frmv;
-  private JTextArea textArea;
-  private JLabel lblNewLabel;
-  private JTextField textField_1;
-  private JButton btnNewButton_1;
+  private JTextArea recordTextArea;
+  private JLabel resultLabel;
+  private JTextField excelPathTextField;
+  private JButton startBuildBtn;
   private JScrollPane scrollPane;
-  private JButton button;
-  private JButton button_1;
+  private JButton exportRecordBtn;
+  private JButton openModelBtn;
   private JMenuBar menuBar;
   private JMenu mnNewMenu;
-  private JMenuItem menuItem;
-  private JMenuItem menuItem_1;
+  private JMenuItem confMenuItem;
+  private JMenuItem exitMenuItem;
   private JSeparator separator;
   private SettingDialog settingDialog;
+  private JButton openExcelBtn;
 
-  @Inject
   private FileTableGenerator generator;
 
   /**
    * Launch the application.
+   * 
+   * @wbp.parser.entryPoint
    */
+  public static void main2(String[] args) {
+    EventQueue.invokeLater(new Runnable() {
+
+      public void run() {
+        MainWindow window = new MainWindow();
+        window.frmv.setVisible(true);
+      }
+    });
+  }
+
   public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
 
@@ -118,9 +130,12 @@ public class MainWindow {
 
   /**
    * Create the application.
+   * 
+   * @wbp.parser.entryPoint
    */
   public MainWindow() {
     initialize();
+    initializeEvent();
   }
 
   /**
@@ -129,6 +144,75 @@ public class MainWindow {
   private void initialize() {
 
     frmv = new JFrame();
+
+    frmv.setBounds(100, 100, 500, 490);
+    frmv.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+    frmv.setIconImage(new BufferedImage(1, 1, BufferedImage.BITMASK));
+    frmv.getContentPane().setLayout(
+            new FormLayout(new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"), FormFactory.DEFAULT_COLSPEC,
+                FormFactory.DEFAULT_COLSPEC, FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC, }, new RowSpec[] { FormFactory.DEFAULT_ROWSPEC,
+                FormFactory.RELATED_GAP_ROWSPEC, RowSpec.decode("max(25dlu;default)"), FormFactory.DEFAULT_ROWSPEC, RowSpec.decode("max(161dlu;default):grow"),
+                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, }));
+
+    openExcelBtn = new JButton("\u6253\u5F00\u6587\u4EF6");
+
+    excelPathTextField = new JTextField();
+    frmv.getContentPane().add(excelPathTextField, "2, 3, fill, default");
+    excelPathTextField.setColumns(10);
+    frmv.getContentPane().add(openExcelBtn, "3, 3, left, default");
+    settingDialog = new SettingDialog();
+
+    startBuildBtn = new JButton("\u5F00\u59CB\u5EFA\u8868");
+
+    frmv.getContentPane().add(startBuildBtn, "4, 3");
+
+    resultLabel = new JLabel("\u7ED3\u679C\u8BB0\u5F55:");
+    frmv.getContentPane().add(resultLabel, "2, 4");
+
+    scrollPane = new JScrollPane();
+    frmv.getContentPane().add(scrollPane, "2, 5, 3, 1, fill, fill");
+
+    recordTextArea = new JTextArea();
+    recordTextArea.setEditable(false);
+    scrollPane.setViewportView(recordTextArea);
+    recordTextArea.setBorder(UIManager.getBorder("TextArea.border"));
+
+    openModelBtn = new JButton("打开模板");
+
+    frmv.getContentPane().add(openModelBtn, "3, 7");
+
+    exportRecordBtn = new JButton("\u5BFC\u51FA\u8BB0\u5F55");
+
+    frmv.getContentPane().add(exportRecordBtn, "4, 7");
+
+    menuBar = new JMenuBar();
+    menuBar.setMargin(new Insets(5, 0, 5, 0));
+    frmv.setJMenuBar(menuBar);
+
+    mnNewMenu = new JMenu("\u5F00\u59CB");
+    mnNewMenu.setHorizontalTextPosition(SwingConstants.CENTER);
+    mnNewMenu.setHorizontalAlignment(SwingConstants.CENTER);
+    mnNewMenu.setPreferredSize(new Dimension(35, 23));
+    menuBar.add(mnNewMenu);
+
+    confMenuItem = new JMenuItem("\u8BBE\u7F6E");
+    mnNewMenu.add(confMenuItem);
+
+    separator = new JSeparator();
+    mnNewMenu.add(separator);
+
+    exitMenuItem = new JMenuItem("\u9000\u51FA");
+    mnNewMenu.add(exitMenuItem);
+  }
+
+  /**
+   * @wbp.parser.entryPoint
+   */
+  public void initializeEvent() {
+
+    /**
+     * 退出提示.
+     */
     frmv.addWindowListener(new WindowAdapter() {
 
       @Override
@@ -142,132 +226,17 @@ public class MainWindow {
       }
     });
 
-    AppConfigure appConfig = AppConfigure.getInstance();
-    frmv.setTitle(appConfig.getAppName() + " " + appConfig.getVersion());
-    frmv.setBounds(100, 100, 500, 490);
-    frmv.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-    frmv.setIconImage(new BufferedImage(1, 1, BufferedImage.BITMASK));
-    frmv.getContentPane().setLayout(
-            new FormLayout(new ColumnSpec[] { FormFactory.RELATED_GAP_COLSPEC, ColumnSpec.decode("default:grow"), FormFactory.DEFAULT_COLSPEC,
-                FormFactory.DEFAULT_COLSPEC, FormFactory.RELATED_GAP_COLSPEC, FormFactory.DEFAULT_COLSPEC, }, new RowSpec[] { FormFactory.DEFAULT_ROWSPEC,
-                FormFactory.RELATED_GAP_ROWSPEC, RowSpec.decode("max(25dlu;default)"), FormFactory.DEFAULT_ROWSPEC, RowSpec.decode("max(161dlu;default):grow"),
-                FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, FormFactory.RELATED_GAP_ROWSPEC, FormFactory.DEFAULT_ROWSPEC, }));
-
-    JButton btnNewButton = new JButton("\u6253\u5F00\u6587\u4EF6");
-    btnNewButton.addActionListener(new ActionListener() {
-
-      public void actionPerformed(ActionEvent e) {
-        JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new File("."));
-        chooser.setAcceptAllFileFilterUsed(false);
-        chooser.setFileFilter(new FileFilter() {
-
-          @Override
-          public String getDescription() {
-            return "(.xlsx)文件";
-          }
-          @Override
-          public boolean accept(File f) {
-            return f.getName().endsWith(".xlsx") || f.isDirectory();
-          }
-        });
-
-        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        chooser.showOpenDialog(null);
-
-        File selectedFile = chooser.getSelectedFile();
-        if (selectedFile == null || selectedFile.getAbsolutePath().equals(textField_1.getText())) {
-          return;
-        } else {
-          textField_1.setText(selectedFile.getAbsolutePath());
-        }
-      }
-    });
-
-    textField_1 = new JTextField();
-    frmv.getContentPane().add(textField_1, "2, 3, fill, default");
-    textField_1.setColumns(10);
-    frmv.getContentPane().add(btnNewButton, "3, 3, left, default");
-    settingDialog = new SettingDialog();
-
-    btnNewButton_1 = new JButton("\u5F00\u59CB\u5EFA\u8868");
-    btnNewButton_1.addActionListener(new ActionListener() {
-
-      public void actionPerformed(ActionEvent e) {
-        // 获取文件名
-        final String filepath = textField_1.getText();
-        if (ValidateUtil.validateNullOrEmtpy(filepath)) {
-          JOptionPane.showMessageDialog(frmv, "请填写文件路径!");
-          return;
-        }
-
-        textArea.setText("");
-        textArea.append("开始检测配置...\n");
-        if (!HttpLogin.testLogin()) {
-          JOptionPane.showMessageDialog(frmv, "请先配置!");
-          settingDialog.setModal(true);
-          settingDialog.setVisible(true);
-          if (!settingDialog.isConfAvailable()) {
-            return;
-          }
-        }
-
-        textArea.append("配置检测成功\n");
-        // 开始创建表
-        new Thread() {
-
-          public void run() {
-            try {
-              generator.startCreate(filepath);
-              JOptionPane.showMessageDialog(frmv, "创建完成!");
-            } catch (RuntimeException e) {
-              JOptionPane.showMessageDialog(frmv, "创建失败!");
-              textArea.append("创建失败!\n");
-              textArea.append("原因:" + e.getMessage());
-              e.printStackTrace();
-            }
-          }
-        }.start();
-      }
-    });
-    frmv.getContentPane().add(btnNewButton_1, "4, 3");
-
-    lblNewLabel = new JLabel("\u7ED3\u679C\u8BB0\u5F55:");
-    frmv.getContentPane().add(lblNewLabel, "2, 4");
-
-    scrollPane = new JScrollPane();
-    frmv.getContentPane().add(scrollPane, "2, 5, 3, 1, fill, fill");
-
-    textArea = new JTextArea();
-    textArea.setEditable(false);
-    scrollPane.setViewportView(textArea);
-    textArea.setBorder(UIManager.getBorder("TextArea.border"));
-
-    button_1 = new JButton("打开模板");
-    button_1.addActionListener(new ActionListener() {
-
-      public void actionPerformed(ActionEvent e) {
-        String path = System.getProperty("user.dir");
-        // 导出模板
-        try {
-          Runtime.getRuntime().exec("cmd /c start " + path + "\\example.xlsx");
-        } catch (IOException e1) {
-          e1.printStackTrace();
-          JOptionPane.showMessageDialog(frmv, "模板打开失败!!");
-        }
-      }
-    });
-    frmv.getContentPane().add(button_1, "3, 7");
-
-    button = new JButton("\u5BFC\u51FA\u8BB0\u5F55");
-    button.addActionListener(new ActionListener() {
+    /**
+     * 按钮导出记录.
+     */
+    exportRecordBtn.addActionListener(new ActionListener() {
 
       public void actionPerformed(ActionEvent e) {
         // 导出记录
         FileWriter writer = null;
         try {
           writer = new FileWriter("temp.txt");
-          writer.write(textArea.getText());
+          writer.write(recordTextArea.getText());
         } catch (IOException e1) {
           e1.printStackTrace();
           JOptionPane.showMessageDialog(frmv, "导出失败!");
@@ -289,59 +258,159 @@ public class MainWindow {
         }
       }
     });
-    frmv.getContentPane().add(button, "4, 7");
 
-    menuBar = new JMenuBar();
-    menuBar.setMargin(new Insets(5, 0, 5, 0));
-    frmv.setJMenuBar(menuBar);
+    /**
+     * 退出菜单.
+     */
+    exitMenuItem.addActionListener(new ActionListener() {
 
-    mnNewMenu = new JMenu("\u5F00\u59CB");
-    mnNewMenu.setHorizontalTextPosition(SwingConstants.CENTER);
-    mnNewMenu.setHorizontalAlignment(SwingConstants.CENTER);
-    mnNewMenu.setPreferredSize(new Dimension(35, 23));
-    menuBar.add(mnNewMenu);
-
-    menuItem = new JMenuItem("\u8BBE\u7F6E");
-    menuItem.addActionListener(new ActionListener() {
+      public void actionPerformed(ActionEvent e) {
+        System.exit(0);
+      }
+    });
+    /**
+     * 设置菜单.
+     */
+    confMenuItem.addActionListener(new ActionListener() {
 
       public void actionPerformed(ActionEvent e) {
         settingDialog.setModal(true);
         settingDialog.setVisible(true);
       }
     });
-    mnNewMenu.add(menuItem);
 
-    separator = new JSeparator();
-    mnNewMenu.add(separator);
-
-    menuItem_1 = new JMenuItem("\u9000\u51FA");
-    menuItem_1.addActionListener(new ActionListener() {
+    /**
+     * 打开模板.
+     */
+    openModelBtn.addActionListener(new ActionListener() {
 
       public void actionPerformed(ActionEvent e) {
-        System.exit(0);
+        String path = System.getProperty("user.dir");
+        // 导出模板
+        try {
+          Runtime.getRuntime().exec("cmd /c start " + path + "\\example.xlsx");
+        } catch (IOException e1) {
+          e1.printStackTrace();
+          JOptionPane.showMessageDialog(frmv, "模板打开失败!!");
+        }
       }
     });
-    mnNewMenu.add(menuItem_1);
+
+    /**
+     * 开始建表.
+     */
+    startBuildBtn.addActionListener(new ActionListener() {
+
+      public void actionPerformed(ActionEvent e) {
+        // 获取文件名
+        final String filepath = excelPathTextField.getText();
+        if (ValidateUtil.validateNullOrEmtpy(filepath)) {
+          JOptionPane.showMessageDialog(frmv, "请填写文件路径!");
+          return;
+        }
+
+        recordTextArea.setText("");
+        recordTextArea.append("开始检测配置...\n");
+        if (!HttpLogin.testLogin()) {
+          JOptionPane.showMessageDialog(frmv, "请先配置!");
+          settingDialog.setModal(true);
+          settingDialog.setVisible(true);
+          if (!settingDialog.isConfAvailable()) {
+            return;
+          }
+        }
+
+        recordTextArea.append("配置检测成功\n");
+        // 开始创建表
+        new Thread() {
+
+          public void run() {
+            try {
+              generator.startCreate(filepath);
+              JOptionPane.showMessageDialog(frmv, "创建完成!");
+            } catch (RuntimeException e) {
+              JOptionPane.showMessageDialog(frmv, "创建失败!");
+              recordTextArea.append("创建失败!\n");
+              recordTextArea.append("原因:" + e.getMessage());
+              e.printStackTrace();
+            }
+          }
+        }.start();
+      }
+    });
+
+    /**
+     * 打开Excel文件.
+     */
+    openExcelBtn.addActionListener(new ActionListener() {
+
+      public void actionPerformed(ActionEvent e) {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new File("."));
+        chooser.setAcceptAllFileFilterUsed(false);
+        chooser.setFileFilter(new FileFilter() {
+
+          @Override
+          public String getDescription() {
+            return "(.xlsx)文件";
+          }
+          @Override
+          public boolean accept(File f) {
+            return f.getName().endsWith(".xlsx") || f.isDirectory();
+          }
+        });
+
+        chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        chooser.showOpenDialog(null);
+
+        File selectedFile = chooser.getSelectedFile();
+        if (selectedFile == null || selectedFile.getAbsolutePath().equals(excelPathTextField.getText())) {
+          return;
+        } else {
+          excelPathTextField.setText(selectedFile.getAbsolutePath());
+        }
+      }
+    });
   }
 
+  /**
+   * 注入表生成器.
+   * 
+   * @param generator
+   */
   @Inject
-  public void setGenerator(@Named("tableGenerator") FileTableGenerator generator) {
+  public void setTableGenerator(@Named("tableGenerator") FileTableGenerator generator) {
     this.generator = generator;
   }
 
+  /**
+   * 注入配置.
+   * 
+   * @param appConfig
+   */
+  @Inject
+  public void setAppConfig(AppConfigure appConfig) {
+    frmv.setTitle(appConfig.getAppName() + " " + appConfig.getVersion());
+  }
+
+  /**
+   * 设置消息传输.
+   * 
+   * @param setMessage
+   */
   @Inject
   public void setSetMessage(@Named("tableGenerator") SetMessage setMessage) {
     setMessage.setPutMessage(new PutMessage() {
 
       @Override
       public void putMessage(String message) {
-        textArea.append(message);
-        textArea.append("\n");
-        textArea.select(textArea.getText().length(), textArea.getText().length());
+        recordTextArea.append(message);
+        recordTextArea.append("\n");
+        recordTextArea.select(recordTextArea.getText().length(), recordTextArea.getText().length());
       }
       @Override
       public void clearMessage() {
-        textArea.setText("");
+        recordTextArea.setText("");
       }
     });
   }

@@ -9,6 +9,7 @@ import java.net.URL;
 
 import cn.hm.quickbo.conf.AWSConfigure;
 import cn.hm.quickbo.util.HttpUtil;
+import cn.hm.quickbo.util.ValidateUtil;
 
 public class HttpLogin {
 
@@ -18,16 +19,18 @@ public class HttpLogin {
    * @return
    */
   public static boolean testLogin() {
+    AWSConfigure awsConfig = AWSConfigure.getInstance();
     try {
-      AWSConfigure conf = AWSConfigure.getInstance();
-      String sid = HttpLogin.getSid(conf.getAwsurl(), conf.getUsername(), conf.getPassword());
+      String sid = HttpLogin.getSid(awsConfig.getAwsurl(), awsConfig.getUsername(), awsConfig.getPassword());
       if (sid == null) {
+        awsConfig.setSid(null);
         return false;
       } else {
-        conf.setSid(sid);
+        awsConfig.setSid(sid);
         return true;
       }
     } catch (IOException e) {
+      awsConfig.setSid(null);
       e.printStackTrace();
       return false;
     }
@@ -42,8 +45,13 @@ public class HttpLogin {
    */
   public static String getSid(String ip, String username, String password) throws MalformedURLException, IOException {
     String sid = null;
+
+    if (ValidateUtil.validateNullOrEmtpy(ip) || ValidateUtil.validateNullOrEmtpy(username) || ValidateUtil.validateNullOrEmtpy(password)) {
+      return sid;
+    }
+
     // 访问URL
-    StringBuilder url = new StringBuilder(60);
+    StringBuilder url = new StringBuilder(40);
     // POST参数
     StringBuilder param = new StringBuilder(100);
 

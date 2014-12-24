@@ -3,9 +3,6 @@ package cn.hm.quickbo.conf;
 
 public class AWSConfigure {
 
-  AWSConfigure() {
-  }
-
   private static AWSConfigure config;
 
   public synchronized static AWSConfigure getInstance() {

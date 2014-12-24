@@ -30,14 +30,24 @@ import cn.hm.quickbo.util.ThreadUtil;
 public class AWSQuickTableGeneratorImpl implements FileTableGenerator, SetMessage {
 
   private PutMessage putMessage = null;
-  private AWSConfigure conf = AWSConfigure.getInstance();
-  
+  private static AWSConfigure conf = AWSConfigure.getInstance();
+
   private TableReader reader;
   private URL url;
 
   private Iterator<Table> iterator;
   private CountDownLatch threadSingal;
 
+  /**
+   * 设置消息传输接口.
+   * 
+   * @param putMessage
+   */
+  public void setPutMessage(PutMessage putMessage) {
+    this.putMessage = putMessage;
+  }
+
+  @Override
   public void startCreate(String filepath) {
     // Table
     sendMessage("读取文件中...");
@@ -47,20 +57,6 @@ public class AWSQuickTableGeneratorImpl implements FileTableGenerator, SetMessag
     sendMessage("开始建表...");
     saveTables(readTables);
     sendMessage("完成");
-  }
-
-  public void sendMessage(String str) {
-    if (putMessage != null)
-      putMessage.putMessage(str);
-  }
-
-  /**
-   * 设置消息传输接口.
-   * 
-   * @param putMessage
-   */
-  public void setPutMessage(PutMessage putMessage) {
-    this.putMessage = putMessage;
   }
 
   @Override
@@ -94,11 +90,13 @@ public class AWSQuickTableGeneratorImpl implements FileTableGenerator, SetMessag
         }
       });
     }
+    
     try {
       threadSingal.await();
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }
+    
     threadPool.shutdown();
   }
 
@@ -113,6 +111,11 @@ public class AWSQuickTableGeneratorImpl implements FileTableGenerator, SetMessag
     }
   }
 
+  public void sendMessage(String str) {
+    if (putMessage != null)
+      putMessage.putMessage(str);
+  }
+
   private void createTable(Table table) {
     HttpURLConnection conn = null;
     try {
@@ -123,9 +126,9 @@ public class AWSQuickTableGeneratorImpl implements FileTableGenerator, SetMessag
       // 发送请求
       HttpUtil.sendPostRequest(conn, param);
 
-      if(putMessage==null)
-        return ;
-      
+      if (putMessage == null)
+        return;
+
       BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
       synchronized (putMessage) {
         String readLine = bufferedReader.readLine();
