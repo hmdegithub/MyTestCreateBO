@@ -13,8 +13,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import javax.inject.Inject;
-import javax.inject.Named;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -32,14 +30,12 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.filechooser.FileFilter;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Controller;
-
 import cn.hm.quickbo.app.dialog.SettingDialog;
 import cn.hm.quickbo.app.mess.PutMessage;
 import cn.hm.quickbo.app.mess.SetMessage;
 import cn.hm.quickbo.conf.AppConfigure;
 import cn.hm.quickbo.dbtable.service.FileTableGenerator;
+import cn.hm.quickbo.dbtable.service.impl.AWSQuickTableGeneratorImpl;
 import cn.hm.quickbo.dbtable.util.HttpLogin;
 import cn.hm.quickbo.util.ValidateUtil;
 
@@ -48,7 +44,6 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
-@Controller
 public class MainWindow {
 
   private JFrame frmv;
@@ -74,33 +69,12 @@ public class MainWindow {
    * 
    * @wbp.parser.entryPoint
    */
-  public static void main2(String[] args) {
+  public static void main(String[] args) {
     EventQueue.invokeLater(new Runnable() {
 
       public void run() {
         MainWindow window = new MainWindow();
         window.frmv.setVisible(true);
-      }
-    });
-  }
-
-  public static void main(String[] args) {
-    EventQueue.invokeLater(new Runnable() {
-
-      public void run() {
-        ClassPathXmlApplicationContext context = null;
-        try {
-          context = new ClassPathXmlApplicationContext("applicationContext.xml");
-          MainWindow window = context.getBean(MainWindow.class);
-          window.frmv.setVisible(true);
-          context.close();
-        } catch (Exception e) {
-          e.printStackTrace();
-        } finally {
-          if (context != null) {
-            context.close();
-          }
-        }
       }
     });
   }
@@ -136,6 +110,11 @@ public class MainWindow {
   public MainWindow() {
     initialize();
     initializeEvent();
+
+    AWSQuickTableGeneratorImpl tableGenerator = new AWSQuickTableGeneratorImpl();
+    setTableGenerator(tableGenerator);
+    setSetMessage(tableGenerator);
+    setAppConfig(AppConfigure.getInstance());
   }
 
   /**
@@ -378,8 +357,7 @@ public class MainWindow {
    * 
    * @param generator
    */
-  @Inject
-  public void setTableGenerator(@Named("tableGenerator") FileTableGenerator generator) {
+  public void setTableGenerator(FileTableGenerator generator) {
     this.generator = generator;
   }
 
@@ -388,7 +366,6 @@ public class MainWindow {
    * 
    * @param appConfig
    */
-  @Inject
   public void setAppConfig(AppConfigure appConfig) {
     frmv.setTitle(appConfig.getAppName() + " " + appConfig.getVersion());
   }
@@ -398,8 +375,7 @@ public class MainWindow {
    * 
    * @param setMessage
    */
-  @Inject
-  public void setSetMessage(@Named("tableGenerator") SetMessage setMessage) {
+  public void setSetMessage(SetMessage setMessage) {
     setMessage.setPutMessage(new PutMessage() {
 
       @Override

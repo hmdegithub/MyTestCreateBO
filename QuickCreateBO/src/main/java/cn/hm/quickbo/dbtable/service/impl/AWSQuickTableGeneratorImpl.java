@@ -13,8 +13,6 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 
-import javax.inject.Named;
-
 import cn.hm.quickbo.app.mess.PutMessage;
 import cn.hm.quickbo.app.mess.SetMessage;
 import cn.hm.quickbo.conf.AWSConfigure;
@@ -26,7 +24,6 @@ import cn.hm.quickbo.dbtable.util.HttpTablePaser;
 import cn.hm.quickbo.util.HttpUtil;
 import cn.hm.quickbo.util.ThreadUtil;
 
-@Named("tableGenerator")
 public class AWSQuickTableGeneratorImpl implements FileTableGenerator, SetMessage {
 
   private PutMessage putMessage = null;

@@ -8,11 +8,6 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import cn.hm.quickbo.conf.AWSConfigure;
 import cn.hm.quickbo.dbtable.domain.Table;
@@ -22,16 +17,9 @@ import cn.hm.quickbo.dbtable.util.HttpLogin;
 import cn.hm.quickbo.dbtable.util.HttpTablePaser;
 import cn.hm.quickbo.util.HttpUtil;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:applicationContext.xml")
 public class TableGeneratorTest {
 
-  @Autowired
-  @Qualifier("config")
   private AWSConfigure conf;
-
-  @Autowired
-  @Qualifier("excelTableReader")
   private ExcelTableReader reader;
 
   /**

@@ -1,6 +1,5 @@
 package cn.hm.quickbo.conf;
 
-import org.springframework.context.annotation.Configuration;
 
 
 /**
@@ -9,9 +8,17 @@ import org.springframework.context.annotation.Configuration;
  * @author huangming
  *
  */
-@Configuration
 public class AppConfigure {
 
+  private static AppConfigure config = null;
+  
+  public synchronized static AppConfigure getInstance() {
+    if (config == null) {
+      config = new AppConfigure();
+    }
+    return config;
+  }
+  
   /**
    * 应用程序名.
    */
