@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.openxml4j.exceptions.OpenXML4JException;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
@@ -59,7 +58,7 @@ public class ExcelSAXTableReader implements TableReader {
   private static final int FIELD_DEFAULT_COL = 5;
 
   private String filename;
-  
+
   public ExcelSAXTableReader() {
     super();
   }
@@ -102,19 +101,7 @@ public class ExcelSAXTableReader implements TableReader {
         curSheetIndex++;
       }
       return list;
-    } catch (InvalidFormatException e) {
-      e.printStackTrace();
-      throw new RuntimeException("读取失败!");
-    } catch (IOException e) {
-      e.printStackTrace();
-      throw new RuntimeException("读取失败!");
-    } catch (OpenXML4JException e) {
-      e.printStackTrace();
-      throw new RuntimeException("读取失败!");
-    } catch (SAXException e) {
-      e.printStackTrace();
-      throw new RuntimeException("读取失败!");
-    } catch (XmlException e) {
+    } catch (IOException | OpenXML4JException | SAXException | XmlException e) {
       e.printStackTrace();
       throw new RuntimeException("读取失败!");
     } finally {
@@ -272,9 +259,6 @@ public class ExcelSAXTableReader implements TableReader {
      * @param attributes
      */
     public void parseCell(Attributes attributes) {
-      // Print the cell reference
-      // System.out.print(attributes.getValue("r") + " - ");
-      // Figure out if the value is an index in the SST
       String cellType = attributes.getValue("t");
       if (cellType != null && cellType.equals("s")) {
         nextIsString = true;
