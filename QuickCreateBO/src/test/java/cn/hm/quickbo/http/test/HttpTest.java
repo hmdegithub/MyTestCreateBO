@@ -20,7 +20,6 @@ public class HttpTest {
   public void testURLConnection() throws IOException {
     URL url = new URL("http://www.baidu.com/");
     URLConnection connection = url.openConnection();
-    // connection.setDoInput(true);
     connection.setDoOutput(true);
 
     PrintWriter out = new PrintWriter(connection.getOutputStream());
@@ -58,12 +57,18 @@ public class HttpTest {
     out.flush();
     socket.shutdownOutput();
 
-    Scanner in = null;
     StringBuilder response = new StringBuilder();
-    in = new Scanner(socket.getInputStream());
-    while (in.hasNextLine()) {
-      response.append(in.nextLine());
-      response.append("\n");
+    Scanner in = null;
+    try {
+      in = new Scanner(socket.getInputStream());
+      while (in.hasNextLine()) {
+        response.append(in.nextLine());
+        response.append("\n");
+      }
+    } finally {
+      if (in != null) {
+        in.close();
+      }
     }
     socket.shutdownInput();
     socket.close();
@@ -75,30 +80,26 @@ public class HttpTest {
     Socket acceptSocket = server.accept();
 
     PrintWriter out = new PrintWriter(acceptSocket.getOutputStream());
-//    out.println("HTTP/1.1 200 OK");
-//    out.println("Date: Fri, 22 May 2009 06:07:21 GMT");
-//    out.println("Content-Type: text/html; charset=UTF-8");
-//    out.println();
     out.println("<html><head></head><body>1</body></html>");
     out.flush();
     acceptSocket.shutdownOutput();
 
-    Scanner in = null;
     StringBuilder response = new StringBuilder();
-    in = new Scanner(acceptSocket.getInputStream());
-    while (in.hasNextLine()) {
-      response.append(in.nextLine());
-      response.append("\n");
+    Scanner in = null;
+    try {
+      in = new Scanner(acceptSocket.getInputStream());
+      while (in.hasNextLine()) {
+        response.append(in.nextLine());
+        response.append("\n");
+      }
+      acceptSocket.shutdownInput();
+    } finally {
+      if (in != null) {
+        in.close();
+      }
     }
-    acceptSocket.shutdownInput();
-
     acceptSocket.close();
     server.close();
-  }
-
-  @Test
-  public void threadPoolSocketConnection() {
-
   }
 
 }

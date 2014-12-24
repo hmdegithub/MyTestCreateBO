@@ -1,8 +1,6 @@
 package cn.hm.quickbo.conf;
 
-import org.springframework.context.annotation.Configuration;
 
-@Configuration
 public class AWSConfigure {
 
   AWSConfigure() {
