@@ -26,11 +26,15 @@ public class AppConfigure {
   /**
    * 版本.
    */
-  private String version = "v0.1";
+  private String version = "v0.1.0";
   /**
    * 描述.
    */
   private String desc = "";
+  /**
+   * 作者.
+   */
+  private String author = "H.M.";
 
   public String getVersion() {
     return version;
@@ -54,6 +58,10 @@ public class AppConfigure {
   
   public void setAppName(String appName) {
     this.appName = appName;
+  }
+  
+  public String getAuthor() {
+    return author;
   }
   
 

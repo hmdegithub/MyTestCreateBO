@@ -35,7 +35,7 @@ import cn.hm.quickbo.app.mess.PutMessage;
 import cn.hm.quickbo.app.mess.SetMessage;
 import cn.hm.quickbo.conf.AppConfigure;
 import cn.hm.quickbo.dbtable.service.FileTableGenerator;
-import cn.hm.quickbo.dbtable.service.impl.AWSQuickTableGeneratorImpl;
+import cn.hm.quickbo.dbtable.service.impl.AWSTableGeneratorImpl;
 import cn.hm.quickbo.dbtable.util.HttpLogin;
 import cn.hm.quickbo.util.ValidateUtil;
 
@@ -111,7 +111,7 @@ public class MainWindow {
     initialize();
     initializeEvent();
 
-    AWSQuickTableGeneratorImpl tableGenerator = new AWSQuickTableGeneratorImpl();
+    AWSTableGeneratorImpl tableGenerator = new AWSTableGeneratorImpl();
     setTableGenerator(tableGenerator);
     setSetMessage(tableGenerator);
     setAppConfig(AppConfigure.getInstance());
@@ -367,7 +367,7 @@ public class MainWindow {
    * @param appConfig
    */
   public void setAppConfig(AppConfigure appConfig) {
-    frmv.setTitle(appConfig.getAppName() + " " + appConfig.getVersion());
+    frmv.setTitle(appConfig.getAppName() + " " + appConfig.getVersion() + "  作者:"+appConfig.getAuthor());
   }
 
   /**

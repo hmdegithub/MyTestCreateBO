@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
 
 import cn.hm.quickbo.app.mess.PutMessage;
@@ -16,7 +17,6 @@ import cn.hm.quickbo.dbtable.domain.Table;
 import cn.hm.quickbo.dbtable.reader.TableReader;
 import cn.hm.quickbo.dbtable.reader.impl.ExcelSAXTableReader;
 import cn.hm.quickbo.dbtable.service.FileTableGenerator;
-import cn.hm.quickbo.dbtable.util.HttpLogin;
 import cn.hm.quickbo.dbtable.util.HttpTablePaser;
 import cn.hm.quickbo.util.HttpUtil;
 
@@ -56,22 +56,7 @@ public class AWSTableGeneratorImpl implements FileTableGenerator, SetMessage {
 
   @Override
   public void saveTable(Table table) {
-    try {
-      // 先获取SID
-      String sid = HttpLogin.getSid(conf.getAwsurl(), conf.getUsername(), conf.getPassword());
-      // Http连接
-      URL url = new URL("http://" + conf.getAwsurl() + "/ajax");
-      HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-      String param = HttpTablePaser.createTableAndTableRequestParam(sid, table);
-      // 发送请求
-      HttpUtil.sendPostRequest(conn, param);
-      // 读取响应参数.
-      String response = HttpUtil.readResponse(conn);
-      // 显示消息
-      System.out.println(response);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    saveTables(Arrays.asList(table));
   }
 
   @Override
@@ -81,40 +66,44 @@ public class AWSTableGeneratorImpl implements FileTableGenerator, SetMessage {
     } catch (MalformedURLException e) {
       throw new RuntimeException(e);
     }
+    
     for (Table table : list) {
-      try {
-        createTable(table);
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
+      createTable(table);
     }
   }
 
-  private void createTable(Table table) throws IOException, UnsupportedEncodingException {
-    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+  private void createTable(Table table) {
+    HttpURLConnection conn = null;
     try {
+      conn = (HttpURLConnection) url.openConnection();
       // 参数分析
       String param = HttpTablePaser.createTableAndTableRequestParam(conf.getSid(), table);
 
       // 发送请求
       HttpUtil.sendPostRequest(conn, param);
 
-      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+      if (putMessage == null)
+        return;
 
-      synchronized (AWSTableGeneratorImpl.this) {
+      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+      synchronized (putMessage) {
         String readLine = bufferedReader.readLine();
         while (readLine != null) {
           // 显示消息
-          // log.info(table.getGroupName() + " -- " + table.getTableName() +
-          // " -- " + table.getTableTitle() + " -- " + readLine);
-          if (putMessage != null)
+          if (putMessage != null) {
             sendMessage(table.getGroupName() + " -- " + table.getTableName() + " -- " + table.getTableTitle() + " -- " + readLine);
-
+          }
           readLine = bufferedReader.readLine();
         }
       }
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
     } finally {
-      conn.disconnect();
+      if (conn != null) {
+        conn.disconnect();
+      }
     }
   }
 
