@@ -4,15 +4,17 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import cn.hm.quickbo.app.mess.PutMessage;
 import cn.hm.quickbo.conf.AWSConfigure;
 import cn.hm.quickbo.dbtable.service.impl.AWSQuickTableGeneratorImpl;
+import cn.hm.quickbo.dbtable.service.impl.AWSSocketTableGeneratorImpl;
 import cn.hm.quickbo.dbtable.service.impl.AWSTableGeneratorImpl;
 import cn.hm.quickbo.dbtable.util.HttpLogin;
 
 public class AWSQuickTableGeneratorTest {
 
   public long startTime;
-  private String filename = "C:/Users/huangming/Desktop/文档/shouhoubo.xlsx";
+  private String filename = "C:/Users/huangming/Desktop/文档/shouhoubo - 副本.xlsx";
 
   public AWSQuickTableGeneratorTest() {
     AWSConfigure config = AWSConfigure.getInstance();
@@ -49,6 +51,22 @@ public class AWSQuickTableGeneratorTest {
   @Test
   public void test2() {
     AWSTableGeneratorImpl generator = new AWSTableGeneratorImpl();
+    generator.startCreate(filename);
+  }
+  
+  @Test
+  public void test3() {
+    AWSSocketTableGeneratorImpl generator = new AWSSocketTableGeneratorImpl();
+    generator.setPutMessage(new PutMessage() {
+      @Override
+      public void putMessage(String message) {
+        System.out.println(message);
+      }
+      @Override
+      public void clearMessage() {
+        System.out.println();
+      }
+    });
     generator.startCreate(filename);
   }
   

@@ -12,7 +12,6 @@ import org.junit.Test;
 import cn.hm.quickbo.conf.AWSConfigure;
 import cn.hm.quickbo.dbtable.domain.Table;
 import cn.hm.quickbo.dbtable.domain.TableField;
-import cn.hm.quickbo.dbtable.reader.impl.ExcelTableReader;
 import cn.hm.quickbo.dbtable.util.HttpLogin;
 import cn.hm.quickbo.dbtable.util.HttpTablePaser;
 import cn.hm.quickbo.util.HttpUtil;
@@ -20,7 +19,6 @@ import cn.hm.quickbo.util.HttpUtil;
 public class TableGeneratorTest {
 
   private AWSConfigure conf;
-  private ExcelTableReader reader;
 
   /**
    * 创建BO表的功能测试

@@ -39,38 +39,47 @@ public class HttpTest {
     System.out.println(response.toString());
   }
 
+  public static final String host = "10.10.10.236";
+  public static final String url = "/index_blue.jsp";
+  public static final String path = "/";
+  public static final int port = 80;
+  public static final byte[] req = ("GET " + url+ " HTTP/1.0\r\nHost:" + url + " \r\n\r\n").getBytes();
+
   @Test
   public void testSocketConnection() throws IOException {
-    InetAddress i4d = Inet4Address.getByName("192.168.56.1");
-    Socket socket = new Socket();
-    socket.connect(new InetSocketAddress(i4d, 8088));
-
-    PrintWriter out = new PrintWriter(socket.getOutputStream());
-    out.println("POST / HTTP1.1");
-    out.println("HOST:127.0.0.1:8088/workflow/login.wf");
-    out.println("User-Agent:Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727; .NET CLR 3.0.04506.648; .NET CLR 3.5.21022)");
-    out.println("Content-Type:application/x-www-form-urlencoded");
-    out.println("Content-Length:40");
-    out.println("Connection:Keep-Alive");
-    out.println();
-    out.println("name=Professional%20Ajax&publisher=Wiley");
-    out.flush();
-    socket.shutdownOutput();
-
+    Socket socket = new Socket(host, port);
+//    PrintWriter out = new PrintWriter(socket.getOutputStream());
+    socket.getOutputStream().write(req);
+//    out.println("HOST:" + host + "/workflow/login.wf");
+//    out.println("User-Agent:Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727; .NET CLR 3.0.04506.648; .NET CLR 3.5.21022)");
+//    out.println("Content-Type:application/x-www-form-urlencoded");
+//    out.println("Content-Length:40");
+//    out.println("Connection:Keep-Alive");
+//    out.println();
+//    out.println("name=Professional%20Ajax&publisher=Wiley");
+//    out.flush();
+    socket.getOutputStream().flush();
+    
     StringBuilder response = new StringBuilder();
-    Scanner in = null;
-    try {
-      in = new Scanner(socket.getInputStream());
-      while (in.hasNextLine()) {
-        response.append(in.nextLine());
-        response.append("\n");
-      }
-    } finally {
-      if (in != null) {
-        in.close();
-      }
+    Scanner in = new Scanner(socket.getInputStream());
+    while (in.hasNextLine()) {
+      response.append(in.nextLine());
+      response.append("\n");
     }
-    socket.shutdownInput();
+
+     System.out.println(response);
+     
+     socket.getOutputStream().write(req);
+     socket.getOutputStream().flush();
+     
+     in = new Scanner(socket.getInputStream());
+     while (in.hasNextLine()) {
+       response.append(in.nextLine());
+       response.append("\n");
+     }
+
+      System.out.println(response);
+     
     socket.close();
   }
 

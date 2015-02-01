@@ -26,11 +26,11 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import cn.hm.quickbo.dbtable.domain.Table;
 import cn.hm.quickbo.dbtable.domain.TableField;
-import cn.hm.quickbo.dbtable.reader.TableReader;
+import cn.hm.quickbo.dbtable.reader.FileTableReader;
 import cn.hm.quickbo.util.StringUtil;
 import cn.hm.quickbo.util.ValidateUtil;
 
-public class ExcelSAXTableReader implements TableReader {
+public class ExcelSAXTableReader extends FileTableReader {
 
   /**
    * 表格标题列.
@@ -57,19 +57,13 @@ public class ExcelSAXTableReader implements TableReader {
    */
   private static final int FIELD_DEFAULT_COL = 5;
 
-  private String filename;
-
   public ExcelSAXTableReader() {
     super();
   }
 
   public ExcelSAXTableReader(String filename) {
     super();
-    this.filename = filename;
-  }
-
-  public void setFilename(String filename) {
-    this.filename = filename;
+    this.filepath = filename;
   }
 
   @Override
@@ -79,7 +73,7 @@ public class ExcelSAXTableReader implements TableReader {
     List<String> sheetNameList = new ArrayList<String>(20);
 
     try {
-      pkg = OPCPackage.open(filename);
+      pkg = OPCPackage.open(filepath);
       XSSFReader r = new XSSFReader(pkg);
       SharedStringsTable sst = r.getSharedStringsTable();
 

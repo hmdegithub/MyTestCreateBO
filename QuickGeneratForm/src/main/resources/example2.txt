@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+	<title>[@title]</title>
+	<link href="../aws_css/public.css" media="all" rel="Stylesheet" type="text/css" /><script>
+var myLang='<I18N#lang>';// 添加当前语言环境变量 用以解决登录时搜索按钮国际化问题
+//effect.js I18N变量定义 开始
+ var 为 = '<I18N#为>';
+ var 最大值校验出错请确认值 = "<I18N#最大值校验出错，请确认值>";
+ var 最小值校验出错请确认值 = "<I18N#最小值校验出错，请确认值>";
+ var 不允许包含空格 = "<I18N#不允许包含空格>";
+ var 不允许为空 = "<I18N#不允许为空>";
+ var 脚本 = "<I18N#脚本>";
+ var 的有效性 = "<I18N#的有效性>";
+ var 不能创建XMLHttpRequest对象实例_ = "<I18N#不能创建XMLHttpRequest对象实例.>";
+ var 执行出错请确认语句值为布尔值 = "<I18N#执行出错，请确认语句值为布尔值>";
+ var 执行出错请确认语法正确 = "<I18N#执行出错，请确认语法正确>";
+ var 警告 = "<I18N#警告>";
+ var 对不起当前页面不支持模板查看 = "<I18N#对不起，当前页面不支持模板查看>";
+ var 数据未通过合法性校验姓名不允许包含空格如果需要请用进行代替 = "<I18N#数据未通过合法性校验[姓名]不允许包含空格,如果需要,请用'.'/'_'进行代替>";
+ var 日期范围校验出错日期不是Ymd格式 = "<I18N#日期范围校验出错，日期不是Y-m-d格式>";
+ var 日期范围校验出错开始日期不是Ymd格式 = "<I18N#日期范围校验出错，开始日期不是Y-m-d格式>";
+ var 日期范围校验出错_结束日期不是Ymd格式 = "<I18N#日期范围校验出错，结束日期不是Y-m-d格式>";
+ var 个字节 = "<I18N#个字节>";
+ var 的参数出错 = "<I18N#的参数出错>";
+ var 确认要删除这个附件吗_文件名为= "<I18N#确认要删除这个附件吗_文件名为>";
+ var 数据未通过合法性校验 = "<I18N#数据未通过合法性校验>";
+ var 表达式 = "<I18N#表达式>";
+ var 数值范围校验出错请确认值 = "<I18N#数值范围校验出错，请确认值>";
+ var 执行出错请确认脚本返回布尔值 = "<I18N#执行出错，请确认脚本返回布尔值>";
+ var 请安装公文管理套件 = "<I18N#请安装公文管理套件>";
+ var 正则表达式 = "<I18N#正则表达式>";
+ var 操作失败 = "<I18N#操作失败>";
+ var 或 = "<I18N#或>";
+ var 提示信息 = "<I18N#提示信息>";
+ var 执行出错请确认语法正确 ="<I18N#执行出错，请确认语法正确>";
+ var 数值超出范围支持的最大数值为99999999999999 = "<I18N#数值超出范围！支持的最大数值为 999999999999.99>";
+ var 系统未找到主题词 = "<I18N#系统未找到主题词>";
+ var 长度不能超过 = "<I18N#长度不能超过>";
+ var 格式错误 = "<I18N#格式错误>";
+ var 插入上传文件 ="<I18N#插入上传文件>";
+ var 插入上传图片="<I18N#插入上传图片>";
+ var 国际电话格式 ="<I18N#国际电话格式>";
+ var 姓名或拼音缩写 ="<I18N#姓名或拼音缩写>";
+ var 确认要删除选中的知识节点吗 = "<I18N#确认要删除选中的知识节点吗>";
+ var 必须是数字类型 = "<I18N#必须是数字类型>";
+ var 当前模式处于模拟测试模式或者URL表单模式不支持扩展按钮的操作 = "<I18N#当前模式处于模拟测试模式或者URL表单模式，不支持扩展按钮的操作>";
+ var 必须输入20以内的数值 = "<I18N#必须输入20以内的数值>";
+//effect.js I18N变量定义 结束
+</script><script type="text/javascript" src="../aws_js/effect.js"></script><script>
+var myLang='<I18N#lang>';// 添加当前语言环境变量 用以解决登录时搜索按钮国际化问题
+//binddata.js里面的国际化变量开始
+ var 关联被撤销 = "<I18N#关联被撤销>";
+ var 网络通讯失败 = "<I18N#网络通讯失败>";
+ var 保存表单记录失败_附件无法上传_返回信息 = "<I18N#保存表单记录失败_附件无法上传_返回信息>";
+ var 请保存表单数据 = "<I18N#请保存表单数据>";
+ var 确认要删除选中的文件吗 = "<I18N#确认要删除选中的文件吗>";
+ var 确认要删除这个附件吗= '<I18N#确认要删除这个附件吗>';
+ var 文件名为= '<I18N#文件名为>';
+ var 保存审核菜单失败 = "<I18N#保存审核菜单失败>";
+ var 警告_您的审核菜单信息可能超长或包含怪字符_审核信息保存失败_请确认_返回信息 = "<I18N#警告_您的审核菜单信息可能超长或包含怪字符_审核信息保存失败_请确认_返回信息>";
+ var 按钮 = "<I18N#按钮>";
+ var 点击异常_请重试 = "<I18N#点击异常_请重试>";
+ var 保存表单失败_请重试 = "<I18N#保存表单失败_请重试>";
+ var 表单保存失败_请重试 = "<I18N#表单保存失败_请重试>";
+ var 对不起_您没有选择为您预先设置的审核菜单 = "<I18N#对不起_您没有选择为您预先设置的审核菜单>";
+ var 对不起_您没有填写意见留言 = "<I18N#对不起_您没有填写意见留言>";
+ var 确认要删除选中的行吗= '<I18N#确认要删除选中的行吗>';
+ var 确认要清空表格全部数据吗= '<I18N#确认要清空表格全部数据吗>';
+ var 输入的条件发现多于1条记录可弹出窗口进行选择确认吗 = "<I18N#输入的条件发现多于1条记录可弹出窗口进行选择确认吗>";
+ var 没有发现匹配的字典记录请确定 = "<I18N#没有发现匹配的字典记录请确定>";
+ var 该字典使用了$getForm动态取值_但表单总字段值已超出512个字符限制_请联系管理员 = "<I18N#该字典使用了$getForm动态取值_但表单总字段值已超出512个字符限制_请联系管理员>";
+ var 清空行选择数据失败 = "<I18N#清空行选择数据失败>";
+ var 手写意见已保存 = "<I18N#手写意见已保存>";
+ var 保存完毕 = "<I18N#保存完毕>";
+ var 修改已保存 = "<I18N#修改已保存>";
+ var 授权 = "<I18N#授权>";
+ var 请选择要复制的记录 = "<I18N#请选择要复制的记录>";
+ var 请填写您要复制记录的条数 = "<I18N#请填写您要复制记录的条数>";
+ var 请输入数字 = "<I18N#请输入数字>";
+ var 请输入大于0的数字 = "<I18N#请输入大于0的数字>";
+ var 头像标识不允许为空 = "<I18N#头像标识不允许为空>";
+ var 请删除已上传的头像图片 = "<I18N#请删除已上传的头像图片>";
+ var 分类选择 = "<I18N#分类选择>";
+ var 对不起您没有上传附件 = "<I18N#对不起您没有上传附件>";
+ var 确认要删除该附件吗 = "<I18N#确认要删除该附件吗>";
+ var 请选择审核菜单后上传 = "<I18N#请选择审核菜单后上传>";
+//binddata.js里面的国际化变量结束
+</script><script type="text/javascript" src="../aws_js/binddata.js"></script><script type="text/javascript" src="../aws_js/calendar.js"></script>
+	<style type="text/css"><!-- /*请修改此处设置第一列的样式*/
+.td1 {
+	width: 12%;
+	padding-right: 2px;
+}
+
+/*请修改此处设置第二列的样式*/
+.td2 {
+	width: 21%;
+	padding-left: 2px;
+}
+
+/*请修改此处设置第三列的样式*/
+.td3 {
+	width: 21%;
+	padding-left: 2px;
+}
+
+/*请修改此处设置第四列的样式*/
+.td4 {
+	width: 21%;
+	padding-left: 2px;
+}
+
+
+.tr1 {
+	background-color: #ffffff;
+}
+
+/*请修改此处设置colspan = 3的单元格样式*/
+.td_colspan_3 {
+	padding-left: 2px;
+}
+
+/*请修改此处设置colspan = 4的单元格样式*/
+.td_colspan_4 {
+}
+
+/*请修改此处设置subReport子表的单元格样式*/
+.td_subReport {	
+		padding: 20px;
+}
+/*输入框样式*/
+.actionsoftInput {  
+font-weight: normal; 
+font-family:"Arial", "Arial", "Helvetica", "sans-serif";
+font-size: 11px;
+border-style: solid gray; 
+border-top-width: 0px; 
+width:80%;
+border-right-width: 0px; 
+border-bottom-width: 1px; 
+border-left-width: 0px;
+background-image:url("../aws_img/null.gif")!important;
+color: expression(this.readOnly == true ? "gray" : "#000000");
+/*与日期控件冲突
+star:expression(
+onfocus=function(){this.select();this.style.backgroundColor='yellow';},
+onblur=function(){this.style.backgroundColor='#FFFFFF';}
+)
+*/
+}
+/*下拉框样式*/
+.actionsoftSelect {  
+font-weight: normal; 
+font-family:"Arial", "Arial", "Helvetica", "sans-serif";
+font-size: 11px;
+background-color: #FFFFFF; 
+border-style: solid gray; 
+border-top-width: 0px; 
+width:90%;
+border-right-width: 0px; 
+border-bottom-width: 1px; 
+border-left-width: 0px;
+border-style: solid gray;
+background-image:url("../aws_img/null.gif")!important;
+color: expression(this.readOnly == true ? "gray" : "#000000");
+}
+/*多行框样式*/
+textarea {  
+font-weight: normal; 
+font-family:"Arial", "Arial", "Helvetica", "sans-serif";
+font-size: 11px;
+background-color: #FFFFFF; 
+border-style: solid gray; 
+width:90%;
+background-image:url("../aws_img/null.gif")!important;
+color: expression(this.readOnly == true ? "gray" : "#000000");
+star:expression(
+onfocus=function(){this.select();this.style.backgroundColor='yellow';},
+onblur=function(){this.style.backgroundColor='#FFFFFF';}
+)
+}
+/*按钮样式*/
+.actionsoftButton {  
+font-family: "Arial", "Arial", "Helvetica", "sans-serif"; 
+background-image:url("../aws_img/null.gif")!important;
+font-size: 11px; 
+text-align: center; 
+background-color: #CBC8C8; 
+border-color: #FFFFFF #FFFFFF #8FBCBF; 
+background-position: middle; 
+cursor:pointer;
+cursor:hand;
+}
+/*请修改此处以改变表单标题样式*/
+.title {
+	color: #333333;
+	font-size: 24px;
+	font-weight: bold;
+}
+-->
+	</style>
+</head>
+<body>
+<form action="./message.wf" method="post" name="frmMain">
+<div style="display:none">[@BXZT][@ZDR][@KHBH][@RXRBZT]</div>
+
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="99%">
+	<tbody>
+		<tr>
+			<td>&nbsp;
+			<div align="center" class="title">送修单</div>
+			</td>
+		</tr>
+		<tr>
+			<td align="center">
+			<table border="0" cellpadding="1" cellspacing="1" width="85%">
+				<tbody>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">&nbsp;</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">送修信息
+						<hr /></td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">送修单号</td>
+						<td class="td3">[@SXDH]</td>
+						<td align="right" class="td1">项目类别</td>
+						<td class="td3">[@XMLB]</td>
+						<td align="right" class="td1">送修方式</td>
+						<td class="td2"><span class="td3">[@SXFS]</span></td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">业务类型</td>
+						<td class="td2">[@YWLX]</td>
+						<td align="right" class="td1">送修原因</td>
+						<td class="td2" colspan="3">[@SXYY]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">800支持</td>
+						<td class="td2">[@ZC800]</td>
+						<td align="right" class="td1">授权编码</td>
+						<td class="td3">[@SQBM]</td>
+						<td align="right" class="td1">RX编码获取方式</td>
+						<td class="td3">[@RXBMHQFS]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">&nbsp;</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">编码信息
+						<hr /></td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">客户到访时间</td>
+						<td class="td2">[@KHDFRQ]</td>
+						<td align="right" class="td1">RX编码申请时间</td>
+						<td class="td2">[@RXBMSQSJ]</td>
+						<td align="right" class="td1">RX编码获得时间</td>
+						<td class="td3">[@RXBMHDSJ]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">编码申请超时原因</td>
+						<td class="td3" colspan="5">[@BMSQCSYY]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">&nbsp;</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">客户信息
+						<hr /></td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">客户名称</td>
+						<td class="td2">[@KHMC]</td>
+						<td align="right" class="td1">客户类型</td>
+						<td class="td3">[@KHLX]</td>
+						<td align="right" class="td1">Email</td>
+						<td class="td3">[@EMAIL]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">固定电话</td>
+						<td class="td3">[@DH]</td>
+						<td align="right" class="td1">详细地址</td>
+						<td class="td3">[@DZ]</td>
+						<td align="right" class="td1">邮编</td>
+						<td class="td2">[@YB]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">&nbsp;</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">送修人信息
+						<hr /></td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">送修人</td>
+						<td class="td3">[@SXR]</td>
+						<td align="right" class="td1">送修人固定电话</td>
+						<td class="td2">[@SXRGDDH]</td>
+						<td align="right" class="td1">送修人手机</td>
+						<td class="td3">[@SXRSJ]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">&nbsp;</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">费用信息
+						<hr /></td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">预收配件成本</td>
+						<td class="td3">[@YSPJCB]</td>
+						<td align="right" class="td1">预收邮寄费</td>
+						<td class="td2">[@YSYJF]</td>
+						<td align="right" class="td1">预收维修费</td>
+						<td class="td3">[@YSWXF]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">预收其他费</td>
+						<td class="td3">[@YSQTF]</td>
+						<td align="right" class="td1">预收押金</td>
+						<td class="td2">[@YSYJ]</td>
+						<td align="right" class="td1">&nbsp;</td>
+						<td class="td2">&nbsp;</td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">费用备注</td>
+						<td class="td3" colspan="5">[@FYBZ]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">&nbsp;</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">升级信息
+						<hr /></td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">是否升级</td>
+						<td class="td3">[@SFSJ]</td>
+						<td align="right" class="td1">升级类型</td>
+						<td class="td3">[@SJLX]</td>
+						<td align="right" class="td1">附件</td>
+						<td class="td3">[@SJFJ]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">升级描述</td>
+						<td class="td3" colspan="5">[@SJMS]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">&nbsp;</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">其他信息
+						<hr /></td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">是否邮寄</td>
+						<td class="td3">[@SFYJ]</td>
+						<td align="right" class="td1">是否有代用品</td>
+						<td class="td3">[@SFYDYP]</td>
+						<td align="right" class="td1">是否开票</td>
+						<td class="td3">[@SFKP]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">交付客服仓库</td>
+						<td class="td_colspan_3" colspan="5">[@JFKFCKBM]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">详情描述</td>
+						<td class="td_colspan_3" colspan="5">[@XQMS]</td>
+					</tr>
+					<tr class="tr1">
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">备注</td>
+						<td class="td_colspan_3" colspan="5">[@BZ]</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">&nbsp;</td>
+					</tr>
+					<tr class="tr1">
+						<td align="left" class="td1" colspan="6">合计信息
+						<hr /></td>
+					</tr>
+					<tr class="tr1">
+						<td align="right" class="td1">产品数量合计</td>
+						<td class="td2">[@CPSLHJ]</td>
+						<td align="right" class="td1">预收费用合计</td>
+						<td class="td3">[@YSFYHJ]</td>
+						<td align="right" class="td1">&nbsp;</td>
+						<td class="td3">&nbsp;</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<table width="85%">
+				<tbody>
+					<tr class="tr1">
+						<td class="td_subReport" colspan="6" height="25">[@SubReport]</td>
+					</tr>
+					<tr class="tr1">
+						<td class="td_subReport" colspan="6" height="25">[@SubReport2]</td>
+					</tr>
+				</tbody>
+			</table>
+			</td>
+		</tr>
+		<tr>
+			<td style="padding:5px;">[@Actionsoft]</td>
+		</tr>
+	</tbody>
+</table>
+
+<div style="display:none">
+<table>
+	<tbody>
+		<tr class="tr1">
+			<td align="left" class="td1" colspan="6">&nbsp;</td>
+		</tr>
+		<tr class="tr1">
+			<td align="left" class="td1" colspan="6">客服信息
+			<hr /></td>
+		</tr>
+		<tr class="tr1">
+			<td align="right" class="td1">省</td>
+			<td class="td3">[@S]</td>
+			<td align="right" class="td1">市</td>
+			<td class="td2">[@SHI]</td>
+			<td align="right" class="td1">市缩写</td>
+			<td class="td2">[@SSX]</td>
+		</tr>
+		<tr class="tr1">
+			<td align="right" class="td1">区/县</td>
+			<td class="td3">[@QX]</td>
+			<td align="right" class="td1">大区编码</td>
+			<td class="td2">[@DQBM]</td>
+			<td align="right" class="td1">大区名称</td>
+			<td class="td3">[@DQMC]</td>
+		</tr>
+		<tr class="tr1">
+			<td align="right" class="td1">项目（库房））</td>
+			<td class="td2">[@XMKF]</td>
+			<td align="right" class="td1">详细地址</td>
+			<td class="td2" colspan="3">[@XXDZ]</td>
+		</tr>
+	</tbody>
+</table>
+</div>
+</form>
+</body>
+</html>

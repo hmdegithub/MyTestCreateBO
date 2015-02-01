@@ -1,0 +1,146 @@
+<html>
+<head>
+<title>[@TITLE]</title>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+<script type="text/javascript" src="../aws_js/effect.js"></script>
+<script type="text/javascript" src="../aws_js/binddata.js"></script>
+<script type="text/javascript" src="../aws_js/calendar.js"></script>
+<script type="text/javascript" src="../aws_js/sz.js"></script>
+<script type="text/javascript"
+	src="../aws_js/jquery/1.8.3/jquery1.8.3.min.js"></script>
+<link href="../aws_css/akl/akl_gov.css" rel="stylesheet" type="text/css" />
+<link href="../aws_css/szformpage.css" media="all" rel="Stylesheet"
+	type="text/css" />
+<link href="../aws_css/akl/akl_sz.css" media="all" rel="Stylesheet"
+	type="text/css" />
+<link href="../aws_css/akl/akl.css" media="all" rel="Stylesheet"
+	type="text/css" />
+<style>
+.td_title {
+	width: 10%;
+	padding-right: 5px;
+	padding-left: :0px;
+}
+/*数据字段内容样式*/
+.td_data2 {
+	width: 52%;
+	color: #333333;
+	line-height: 23px;
+	text-align: left;
+	padding-left: 3px;
+	font-size: 11px;
+	font-family: Arial, Helvetica, sans-serif;
+	border-bottom: 1px #999999 dotted;
+	vertical-align: middle;
+	word-wrap: break-word;
+	word-break: break-all;
+}
+</style>
+</head>
+<body class="formbody">
+	<div id="border" style="width: 98%">
+		<form action="./message.wf" method="post" name="frmMain">
+			<!--隐藏字段区域-->
+			<div style="display: none">[@HIDDEN]</div>
+
+			<table border="0" cellpadding="0" cellspacing="0"
+				style="margin-bottom: 5px" width="100%">
+				<tbody>
+					<tr>
+						<td class="title">[@FORMNAME]</td>
+					</tr>
+					<tr>
+						<td align="left">
+							<table border="0" cellpadding="0" cellspacing="0" width="100%">
+								<tbody>
+									<tr>
+										<td class="readonly">
+											<div align="right">制单人：[@ZDR]</div>
+
+											<div align="right">制单日期：[@ZDRQ]</div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div id="border1" style="width: 100%">
+				<table align="center" cellpadding="0" cellspacing="0" width="100%">
+					<tbody>
+						<!--第一个页签-->
+						<tr>
+							<td>
+								<table align="center" border="0" cellpadding="0" cellspacing="1"
+									class="a2" height="30" width="100%">
+									<tbody>
+										<tr align="middle" class="a1">
+											<td class="tab1" id="Tab1" nowrap="nowrap"
+												onclick="openBaseInfo(rowData1,rowData2)" width="12%">基本信息</td>
+											<td align="left" valign="bottom" width="52%">&nbsp;</td>
+										</tr>
+									</tbody>
+								</table>
+							</td>
+						</tr>
+						<tr id="rowData1">
+							<td>
+								<table align="left" cellpadding="0" cellspacing="0" width="100%">
+									<tbody>
+										<!--第一个页签-->
+										<tr class="column">
+											<td align="left" colspan="6">基本信息</td>
+										</tr>
+										[@HEAD]
+									</tbody>
+								</table>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<table border="0" cellpadding="0" cellspacing="0" width="100%">
+									<tbody>
+										<tr class="column">
+											<td align="left">详细信息</td>
+										</tr>
+										[@BODY]
+									</tbody>
+								</table>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tbody>
+					<tr>
+						<td class="data">
+							<fieldset class="td_memo">
+								<legend class="td_memo_title">使用说明</legend>
+								<p>
+									1.表单中带<img alt="必须填写" src="../aws_img/notNull.gif" />的为必填项;
+								</p>
+							</fieldset>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<table width="100%">
+				<tbody>
+					<tr>
+						<td style="margin-top: 10px"><br /> [@Actionsoft]</td>
+					</tr>
+				</tbody>
+			</table>
+			<script type="text/javascript">
+				//初始化栏位收缩
+				column_init();
+			</script>
+		</form>
+	</div>
+</body>
+</html>
