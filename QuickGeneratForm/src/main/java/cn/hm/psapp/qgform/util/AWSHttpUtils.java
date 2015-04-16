@@ -16,11 +16,54 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 
+import cn.hm.psapp.qgform.config.ConfigurationFactory;
 import cn.hm.psapp.qgform.find.impl.BMBytesFindProcesser;
 
 public class AWSHttpUtils {
 
+  private static final String sid;
+  private static final String PREFIX_SID = "sid=";
+
+  static {
+    sid = ConfigurationFactory.loadJson().getSid();
+  }
+
   private AWSHttpUtils() {
+  }
+
+  public static void sendSaveDict(String url) {
+    CloseableHttpClient httpClient = HttpClients.createMinimal();
+    HttpPost httpPos = new HttpPost(url);
+    httpPos.setHeader(new BasicHeader("Accept-Language", "zh-CN,zh;q=0.8"));
+    httpPos.setHeader(new BasicHeader("Content-Type", "application/x-www-form-urlencoded"));
+    httpPos.setHeader(new BasicHeader("User-Agent",
+            "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.99 Safari/537.36"));
+    httpPos.setHeader(new BasicHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"));
+
+    List<NameValuePair> requestParams = new ArrayList<NameValuePair>(10);
+    requestParams.add(new BasicNameValuePair("cmd", "Dictionary_Edit_FileOperate"));
+    requestParams.add(new BasicNameValuePair("sid", sid));
+    requestParams.add(new BasicNameValuePair("type", "save"));
+
+    requestParams.add(new BasicNameValuePair("dictName", "LoginBPM"));
+    requestParams.add(new BasicNameValuePair("dictTitle", "cn"));
+    requestParams.add(new BasicNameValuePair("dictTitle", "cn"));
+    requestParams.add(new BasicNameValuePair("dictTitle", "cn"));
+    requestParams.add(new BasicNameValuePair("dictTitle", "cn"));
+
+    try {
+      httpPos.setEntity(new UrlEncodedFormEntity(requestParams, "UTF-8"));
+    } catch (UnsupportedEncodingException e) {
+      throw new RuntimeException(e);
+    }
+
+    try {
+      httpClient.execute(httpPos);
+    } catch (ClientProtocolException e) {
+      throw new RuntimeException(e);
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   /**
@@ -29,7 +72,7 @@ public class AWSHttpUtils {
    * @param url
    * @param nvps
    */
-  public static void sendSaveRequest(String url, List<NameValuePair> nvps) {
+  public static void sendSaveFormRequest(String url, List<NameValuePair> nvps) {
     CloseableHttpClient httpClient = HttpClients.createMinimal();
     HttpPost httpPos = new HttpPost(url);
     httpPos.setHeader(new BasicHeader("Accept-Language", "zh-CN,zh;q=0.8"));
@@ -87,11 +130,11 @@ public class AWSHttpUtils {
 
     BMBytesFindProcesser findPorcesser = new BMBytesFindProcesser();
 
-    int indexS = findPorcesser.findBytes(bytes, "sid=".getBytes("UTF-8"));
+    int indexS = findPorcesser.findBytes(bytes, PREFIX_SID.getBytes("UTF-8"));
     if (indexS == -1) {
       throw new RuntimeException("用户名或密码错误!");
     }
-    indexS = indexS + "sid=".length();
+    indexS = indexS + PREFIX_SID.length();
 
     int indexE = findPorcesser.findBytes(bytes, indexS, "&".getBytes());
     if (indexE == -1) {

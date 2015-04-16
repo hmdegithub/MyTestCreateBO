@@ -1,20 +1,33 @@
 package cn.hm.psapp.qgform.format;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.hm.psapp.qgform.Field;
 import cn.hm.psapp.qgform.Form;
 import cn.hm.psapp.qgform.Table;
-import cn.hm.psapp.qgform.config.ConfigConstant;
+import cn.hm.psapp.qgform.config.ConfigurationFactory;
 
 public class FieldControlFormat {
+
+  private static Map<String, Object> form = ConfigurationFactory.loadJson().getForm();
+  /** 默认INPUTWIDTH. */
+  private static final int DEFAULT_INPUTWIDTH;
+  /** 是否强制更改宽度. */
+  private static final boolean ISCHANGE;
+
+  static {
+    Map<String, Object> subtableMap = (Map<String, Object>) form.get("subtable");
+    ISCHANGE = (boolean) subtableMap.get("inputWidthForOneWordMustChange");
+    DEFAULT_INPUTWIDTH = (int) subtableMap.get("inputWidthForOneWord");
+  }
 
   public Form format(Form form) {
     Table mainTable = form.getMainTable();
 
     List<Field> fieldList = mainTable.getFieldList();
     for (Field field : fieldList) {
-      field.setInputWidth(ConfigConstant.DEFAULT_INPUTWIDTH);
+      field.setInputWidth(DEFAULT_INPUTWIDTH);
       matchDataXml(field);
       matchInputWidth(field);
     }
@@ -29,7 +42,7 @@ public class FieldControlFormat {
 
     return form;
   }
-
+  
   /**
    * 匹配显示宽度.
    * 
@@ -51,7 +64,7 @@ public class FieldControlFormat {
    */
   public Field matchDataXml(Field field) {
     if (Field.DISPLAYTYPE_数据字典.equals(field.getDisplayType()) && Field.FIELD_TYPE_文本.equals(field.getFieldType())) {
-      field.setInputWidth(ConfigConstant.DEFAULT_INPUTWIDTH - 5);
+      field.setInputWidth(DEFAULT_INPUTWIDTH - 5);
       field.setHtmlInner("readonly");
     }
     return field;
@@ -71,17 +84,17 @@ public class FieldControlFormat {
       if (fieldSize >= 200) {
         field.setDisplayType(Field.DISPLAYTYPE_多行);
         field.setInputHeight(3);
-        field.setInputWidth(ConfigConstant.DEFAULT_INPUTWIDTH * 3);
+        field.setInputWidth(DEFAULT_INPUTWIDTH * 3);
       } else if (fieldSize >= 140) {
         field.setDisplayType(Field.DISPLAYTYPE_多行);
         field.setInputHeight(2);
-        field.setInputWidth(ConfigConstant.DEFAULT_INPUTWIDTH * 3);
+        field.setInputWidth(DEFAULT_INPUTWIDTH * 3);
       } else if (fieldSize > 100) {
         field.setDisplayType(Field.DISPLAYTYPE_单行);
-        field.setInputWidth(ConfigConstant.DEFAULT_INPUTWIDTH * 2);
+        field.setInputWidth(DEFAULT_INPUTWIDTH * 2);
       } else if (fieldSize > -1) {
         field.setDisplayType(Field.DISPLAYTYPE_单行);
-        field.setInputWidth(ConfigConstant.DEFAULT_INPUTWIDTH);
+        field.setInputWidth(DEFAULT_INPUTWIDTH);
       }
     }
     return field;

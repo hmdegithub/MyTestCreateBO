@@ -12,7 +12,8 @@ import cn.hm.psapp.qgform.Form;
 import cn.hm.psapp.qgform.FormReader;
 import cn.hm.psapp.qgform.FormSender;
 import cn.hm.psapp.qgform.Table;
-import cn.hm.psapp.qgform.config.ConfigConstant;
+import cn.hm.psapp.qgform.config.Configuration;
+import cn.hm.psapp.qgform.config.ConfigurationFactory;
 import cn.hm.psapp.qgform.dao.AWSDao;
 import cn.hm.psapp.qgform.db.DBUtil;
 import cn.hm.psapp.qgform.reader.AWSFormReader;
@@ -28,9 +29,14 @@ public class FieldControlFormatTest {
 
   @Before
   public void init() {
+    Configuration config = ConfigurationFactory.loadJson();
+    String url = config.getAws().get("url");
+    String username = config.getAws().get("username");
+    String password = config.getAws().get("password");
+
     try {
-      String sid = AWSHttpUtils.getSid("http://10.10.10.201:8089/workflow/login.wf", "admin", "aklhello123,.");
-      ConfigConstant.sid = sid;
+      String sid = AWSHttpUtils.getSid(url, username, password);
+      config.setSid(sid);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -41,7 +47,7 @@ public class FieldControlFormatTest {
    */
   @Test
   public void testFormat() {
-    Form form = reader.read("42e5d26e59006ba60c22c7420f82ae20");
+    Form form = reader.read("ff287ac9bc57b4b1147b5dbd4b4212f4");
     format.format(form);
     Connection conn = null;
 
@@ -70,7 +76,7 @@ public class FieldControlFormatTest {
    */
   @Test
   public void testBuilderHtmlAndFormat() {
-    Form form = reader.read("42e5d26e591d1d1c4628dd0ccb68c0f4");
+    Form form = reader.read("ff82ba24b239ef3d41310d21158f51e3");
     format.format(form);
 
     sender.send(form);

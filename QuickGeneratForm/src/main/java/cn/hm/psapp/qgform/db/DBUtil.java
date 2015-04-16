@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import cn.hm.psapp.qgform.config.ConfigConstant;
+import cn.hm.psapp.qgform.config.ConfigurationFactory;
 
 public class DBUtil {
 
@@ -16,14 +16,15 @@ public class DBUtil {
 
   static {
     try {
-      Class.forName("net.sourceforge.jtds.jdbc.Driver");
+      Class.forName(ConfigurationFactory.loadJson().getJdbcDriver());
     } catch (ClassNotFoundException e) {
-      e.printStackTrace();
+      throw new RuntimeException(e);
     }
   }
 
   public static Connection open() throws SQLException {
-    return DriverManager.getConnection(ConfigConstant.jdbcUrl, ConfigConstant.jdbcUsername, ConfigConstant.jdbcPassword);
+    return DriverManager.getConnection(ConfigurationFactory.loadJson().getJdbcUrl(), ConfigurationFactory.loadJson().getJdbcUsername(), ConfigurationFactory
+            .loadJson().getJdbcPassword());
   }
 
   public static ResultSet executeQuery(PreparedStatement ps, Object... objs) throws SQLException {
