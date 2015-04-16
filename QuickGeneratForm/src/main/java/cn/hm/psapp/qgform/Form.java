@@ -68,7 +68,8 @@ public class Form {
 
   @Override
   public String toString() {
-    return "Form [uuid=" + uuid + ", name=" + name + ", modelName=" + modelName + ", title=" + title + "]";
+    return "Form [tables=" + tables + ", mainTable=" + mainTable + ", uuid=" + uuid + ", name=" + name + ", modelName=" + modelName + ", title=" + title
+            + ", id=" + id + "]";
   }
 
 }

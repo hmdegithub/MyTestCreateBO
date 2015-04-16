@@ -1,4 +1,4 @@
-package cn.hm.psapp.qgform.paser.html.format;
+package cn.hm.psapp.qgform.paser.html;
 
 import java.util.List;
 import java.util.Map;
@@ -11,28 +11,43 @@ import cn.hm.psapp.qgform.Field;
 import cn.hm.psapp.qgform.Form;
 import cn.hm.psapp.qgform.Table;
 import cn.hm.psapp.qgform.config.ConfigurationFactory;
-import cn.hm.psapp.qgform.paser.html.FieldHtmlFormatter;
 
-public class OgnlRuleHtmlFormatter implements FieldHtmlFormatter {
+public class OgnlRuleHtmlFormatter {
 
   private static Map<String, Object> form = null;
   private static final int INIT_COL_NUM;
   private static List<Map<String, Object>> tdRuleList = null;
   private static List<Map<String, Object>> trRuleList = null;
+  private static List<Map<String, Object>> subRuleList = null;
   private static final Pattern MATCH = Pattern.compile("\\$\\{TEXT\\}");
 
   static {
     form = ConfigurationFactory.loadJson().getForm();
     tdRuleList = (List<Map<String, Object>>) form.get("tdmatch");
     trRuleList = (List<Map<String, Object>>) form.get("trmatch");
+    subRuleList = (List<Map<String, Object>>) form.get("submatch");
     INIT_COL_NUM = (int) form.get("col");
   }
 
-  @Override
   public String build(Form form) {
     Table mTable = form.getMainTable();
     List<Field> fieldList = mTable.getFieldList();
     return builderHtml(fieldList);
+  }
+
+  public String buildSub(Form form) {
+    OgnlContext context = new OgnlContext();
+    StringBuilder html = new StringBuilder(300);
+    List<Table> tables = form.getTables();
+    for (int i = 0; i < tables.size(); i++) {
+      context.put("row", i);
+      if (i == 0) {
+        html.append(replaceMatch(subMatch(context), "[@SubReport]")).append("\n");
+      } else {
+        html.append(replaceMatch(subMatch(context), "[@SubReport" + (i + 1) + "]")).append("\n");
+      }
+    }
+    return html.toString();
   }
 
   /**
@@ -47,8 +62,8 @@ public class OgnlRuleHtmlFormatter implements FieldHtmlFormatter {
 
     boolean nextRow = false;
 
-    StringBuilder html = new StringBuilder();
-    StringBuilder rowHtml = new StringBuilder();
+    StringBuilder html = new StringBuilder(500);
+    StringBuilder rowHtml = new StringBuilder(200);
 
     OgnlContext context = new OgnlContext();
 
@@ -122,6 +137,29 @@ public class OgnlRuleHtmlFormatter implements FieldHtmlFormatter {
       context.put("type", field.getFieldType());
       context.put("control", field.getDisplayType());
     }
+  }
+
+  /**
+   * 匹配子表标签.
+   * 
+   * @param express
+   * @param context
+   * @return
+   */
+  public String subMatch(OgnlContext context) {
+    for (Map<String, Object> map : subRuleList) {
+      String expression = (String) map.get("expression");
+      try {
+        Object value = Ognl.getValue(expression, context);
+        boolean b = (boolean) value;
+        if (b) {
+          return (String) map.get("html");
+        }
+      } catch (OgnlException e) {
+        throw new RuntimeException(e);
+      }
+    }
+    return "";
   }
 
   /**

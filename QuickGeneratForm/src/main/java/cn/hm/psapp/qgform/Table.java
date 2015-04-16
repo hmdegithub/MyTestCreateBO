@@ -43,6 +43,7 @@ public class Table {
 
   @Override
   public String toString() {
-    return "Table [id=" + id + ", tableName=" + tableName + ", tableTitle=" + tableTitle + "]";
+    return "Table [id=" + id + ", tableName=" + tableName + ", tableTitle=" + tableTitle + ", fieldList=" + fieldList + "]";
   }
+  
 }

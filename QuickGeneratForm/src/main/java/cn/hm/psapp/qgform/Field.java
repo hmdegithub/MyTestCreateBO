@@ -196,7 +196,7 @@ public class Field {
     return "Field [id=" + id + ", fieldName=" + fieldName + ", fieldTitle=" + fieldTitle + ", fieldType=" + fieldType + ", fieldNotNull=" + fieldNotNull
             + ", fieldDefault=" + fieldDefault + ", displayWidth=" + displayWidth + ", displayType=" + displayType + ", displaySql=" + displaySql
             + ", isDisplay=" + isDisplay + ", inputWidth=" + inputWidth + ", isModify=" + isModify + ", inputHeight=" + inputHeight + ", htmlInner="
-            + htmlInner + ", fieldLength=" + fieldLength + ", uuid=" + uuid + ", table=" + table + "]";
+            + htmlInner + ", fieldLength=" + fieldLength + ", uuid=" + uuid + "]";
   }
-
+  
 }

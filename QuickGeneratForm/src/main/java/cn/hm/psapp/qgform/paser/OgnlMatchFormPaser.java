@@ -11,10 +11,9 @@ import java.util.Set;
 import cn.hm.psapp.qgform.Field;
 import cn.hm.psapp.qgform.Form;
 import cn.hm.psapp.qgform.FormPaser;
-import cn.hm.psapp.qgform.Table;
 import cn.hm.psapp.qgform.find.BytesFindProcesser;
 import cn.hm.psapp.qgform.find.impl.BMBytesFindProcesser;
-import cn.hm.psapp.qgform.paser.html.format.OgnlRuleHtmlFormatter;
+import cn.hm.psapp.qgform.paser.html.OgnlRuleHtmlFormatter;
 import cn.hm.psapp.qgform.util.IOUtils;
 
 public class OgnlMatchFormPaser implements FormPaser {
@@ -75,18 +74,7 @@ public class OgnlMatchFormPaser implements FormPaser {
    * @return
    */
   public String parseBody(Form form) {
-    StringBuilder sb = new StringBuilder();
-    List<Table> tables = form.getTables();
-    for (int i = 0; i < tables.size(); i++) {
-      sb.append("<tr class=\"tr1\"><td align=\"left\" class=\"td_subReport\" id=\"subtable").append(i + 1).append("\">");
-      if (i == 0) {
-        sb.append("[@SubReport]");
-      } else {
-        sb.append("[@SubReport").append(i + 1).append("]");
-      }
-      sb.append("</td></tr>");
-    }
-    return sb.toString();
+    return parser.buildSub(form);
   }
 
   /**

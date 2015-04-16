@@ -14,14 +14,6 @@ public class DBUtil {
   private DBUtil() {
   }
 
-  static {
-    try {
-      Class.forName(ConfigurationFactory.loadJson().getJdbcDriver());
-    } catch (ClassNotFoundException e) {
-      throw new RuntimeException(e);
-    }
-  }
-
   public static Connection open() throws SQLException {
     return DriverManager.getConnection(ConfigurationFactory.loadJson().getJdbcUrl(), ConfigurationFactory.loadJson().getJdbcUsername(), ConfigurationFactory
             .loadJson().getJdbcPassword());
