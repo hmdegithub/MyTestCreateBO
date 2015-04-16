@@ -1,0 +1,17 @@
+cmd:Dictionary_Edit_FileOperate
+sid:admin_1422925862794_192.168.80.57$7585a3ae46f79d4310b55628ac4f2394L{cn}LC{pc}C
+dictName:AKL-SH-DFH-WLXX.xml
+type:save
+dictTitle:待发货物流信息
+dictLine:10
+dictSql:SELECT *  FROM BO_AKL_DFH_S WHERE 1=1 AND ???
+dictJsBefore:
+dictJsAfter:
+dictMapping:<name>XH</name><targetName>SHRDH</targetName><nameType>文本</nameType><display>型号</display><width>100</width><isHidden>false</isHidden><filter>false</filter>|<name>WLMC</name><targetName>WLDH</targetName><nameType>文本</nameType><display>物料名称</display><width>100</width><isHidden>false</isHidden><filter>false</filter>|<name>SL</name><targetName>FHDZ</targetName><nameType>数值</nameType><display>数量</display><width>80</width><isHidden>false</isHidden><filter>false</filter>|
+dictQuery:
+dictChoiceField:
+dictChoiceName:
+dictChoiceSql:
+dataAdapter:<dataAdapter class="com.actionsoft.awf.form.execute.plugins.dictionary.datasource.db.AWSDBData"/>
+dictFromTable:BO_AKL_DFH_S
+dictTargetTable:BO_AKL_WLYSD_S
