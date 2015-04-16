@@ -22,7 +22,7 @@ import cn.hm.psapp.qgform.util.AWSHttpUtils;
 
 public class FieldControlFormatTest {
 
-  private FieldControlFormat format = new FieldControlFormat();
+  private ExpressMatchFieldWidthFormat format = new ExpressMatchFieldWidthFormat();
   private FormReader reader = new AWSFormReader();
   private AWSDao dao = new AWSDao();
   private FormSender sender = new AWSHttpFormWrtier();
@@ -42,10 +42,17 @@ public class FieldControlFormatTest {
     }
   }
 
+  @Test
+  public void testFormat2() {
+    ExpressMatchFieldWidthFormat format = new ExpressMatchFieldWidthFormat();
+    Form form = reader.read("ff287ac9bc57b4b1147b5dbd4b4212f4");
+    format.format(form);
+    System.out.println(form);
+  }
+
   /**
    * 自动调节表单字段长度.
    */
-  @Test
   public void testFormat() {
     Form form = reader.read("ff287ac9bc57b4b1147b5dbd4b4212f4");
     format.format(form);
@@ -74,7 +81,6 @@ public class FieldControlFormatTest {
   /**
    * 自动调节表单字段长度.
    */
-  @Test
   public void testBuilderHtmlAndFormat() {
     Form form = reader.read("ff82ba24b239ef3d41310d21158f51e3");
     format.format(form);

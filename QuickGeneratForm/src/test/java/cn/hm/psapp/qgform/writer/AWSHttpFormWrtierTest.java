@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import cn.hm.psapp.qgform.Form;
 import cn.hm.psapp.qgform.FormReader;
-import cn.hm.psapp.qgform.config.ConfigConstant;
 import cn.hm.psapp.qgform.config.Configuration;
 import cn.hm.psapp.qgform.config.ConfigurationFactory;
 import cn.hm.psapp.qgform.reader.AWSFormReader;
