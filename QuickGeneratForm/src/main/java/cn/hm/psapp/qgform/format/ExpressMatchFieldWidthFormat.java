@@ -77,7 +77,7 @@ public class ExpressMatchFieldWidthFormat {
     return 0;
   }
 
-  public void putFieldToContext(OgnlContext context, Field field) {
+  public static void putFieldToContext(OgnlContext context, Field field) {
     if (field == null) {
       context.put("name", null);
       context.put("title", null);

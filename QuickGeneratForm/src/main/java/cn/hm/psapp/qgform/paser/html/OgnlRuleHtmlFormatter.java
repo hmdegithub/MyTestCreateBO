@@ -12,6 +12,7 @@ import cn.hm.psapp.qgform.Field;
 import cn.hm.psapp.qgform.Form;
 import cn.hm.psapp.qgform.Table;
 import cn.hm.psapp.qgform.config.ConfigurationFactory;
+import cn.hm.psapp.qgform.format.ExpressMatchFieldWidthFormat;
 
 public class OgnlRuleHtmlFormatter {
 
@@ -80,7 +81,7 @@ public class OgnlRuleHtmlFormatter {
 
       // 存入Context.
       Field field = fieldList.get(fieldIndexArray.get(index));
-      putFieldToContext(context, field);
+      ExpressMatchFieldWidthFormat.putFieldToContext(context, field);
       context.put("col", curCol);
 
       // 匹配HTML.
@@ -109,7 +110,7 @@ public class OgnlRuleHtmlFormatter {
       // 换行或结束时，进行此操作.
       if (nextRow || fieldIndexArray.size() == 0) {
         // 补充空格.
-        putFieldToContext(context, null);
+        ExpressMatchFieldWidthFormat.putFieldToContext(context, null);
         while (INIT_COL_NUM - curCol > 0) {
           context.put("col", curCol);
           tdMap = tdMatch(context);
@@ -134,24 +135,6 @@ public class OgnlRuleHtmlFormatter {
     }
 
     return html.toString();
-  }
-
-  public void putFieldToContext(OgnlContext context, Field field) {
-    if (field == null) {
-      context.put("name", null);
-      context.put("title", null);
-      context.put("width", null);
-      context.put("type", null);
-      context.put("control", null);
-      context.put("length", null);
-    } else {
-      context.put("name", field.getFieldName());
-      context.put("title", field.getFieldTitle());
-      context.put("width", field.getInputWidth());
-      context.put("type", field.getFieldType());
-      context.put("control", field.getDisplayType());
-      context.put("length", field.getFieldLength());
-    }
   }
 
   /**
