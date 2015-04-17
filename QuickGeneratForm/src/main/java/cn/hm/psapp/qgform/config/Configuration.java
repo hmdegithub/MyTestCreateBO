@@ -34,13 +34,13 @@ public class Configuration {
     return jdbc;
   }
   public String getUrl() {
-    return app.get("url");
+    return aws.get("url");
   }
   public String getSid() {
-    return app.get("sid");
+    return aws.get("sid");
   }
   public void setSid(String sid) {
-    app.put("sid", sid);
+    aws.put("sid", sid);
   }
   public String getJdbcUrl() {
     return jdbc.get("url");

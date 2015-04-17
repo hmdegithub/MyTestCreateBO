@@ -56,7 +56,7 @@ public class ExpressMatchFieldWidthFormat {
   }
 
   /**
-   * 匹配行标签.
+   * 匹配主表宽度标签.
    * 
    * @param context
    * @return
@@ -84,7 +84,16 @@ public class ExpressMatchFieldWidthFormat {
       context.put("width", null);
       context.put("type", null);
       context.put("control", null);
+      context.put("length", null);
     } else {
+      String fieldLength = field.getFieldLength();
+      if (fieldLength.indexOf(",") != -1) {
+        String[] split = fieldLength.split(",");
+        Integer length = Integer.parseInt(split[0]) + Integer.parseInt(split[1]);
+        context.put("length", length.toString());
+      } else {
+        context.put("length", field.getFieldLength());
+      }
       context.put("name", field.getFieldName());
       context.put("title", field.getFieldTitle());
       context.put("width", field.getInputWidth());
@@ -94,7 +103,7 @@ public class ExpressMatchFieldWidthFormat {
   }
 
   /**
-   * 匹配行标签.
+   * 匹配子表宽度标签.
    * 
    * @param context
    * @return

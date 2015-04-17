@@ -22,26 +22,32 @@ public class StartUp {
     System.out.println("开始读取配置...");
     ConfigurationFactory.loadJson();
     System.out.println("配置读取完毕...");
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("请输入表单uuid:");
-    String uuid = scanner.nextLine();
+    Scanner scanner = null;
+    try {
+      scanner = new Scanner(System.in);
+      System.out.println("请输入表单uuid:");
+      String uuid = scanner.nextLine();
 
-    while ("QUIT".equals(uuid.toUpperCase())) {
-      System.out.println("开始读取表单...");
-      // 读取表单
-      Form form = buildForm(uuid);
-      System.out.println("上传表单中...");
-      // 发送表单.
-      FormSender sender = new AWSHttpFormWrtier();
-      sender.send(form);
-      System.out.println("上传完毕");
-      // 改变宽度.
-      modifyWidth(form);
-      System.out.println("字段宽度修改完毕");
-      System.out.println("输入QUIT退出 或 继续输入表单UUID");
-      uuid = scanner.nextLine();
+      while (!"QUIT".equals(uuid.toUpperCase())) {
+        System.out.println("开始读取表单...");
+        // 读取表单
+        Form form = buildForm(uuid);
+        System.out.println("上传表单中...");
+        // 发送表单.
+        FormSender sender = new AWSHttpFormWrtier();
+        sender.send(form);
+        System.out.println("上传完毕");
+        // 改变宽度.
+        modifyWidth(form);
+        System.out.println("字段宽度修改完毕");
+        System.out.println("输入QUIT退出 或 继续输入表单UUID");
+        uuid = scanner.nextLine();
+      }
+    } finally {
+      if (scanner != null) {
+        scanner.close();
+      }
     }
-
     System.out.println("谢谢使用!");
   }
 

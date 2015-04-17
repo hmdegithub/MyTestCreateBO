@@ -14,15 +14,14 @@ import cn.hm.psapp.qgform.db.DBUtil;
 
 public class AWSDao {
 
-  private static final String UPDATE_FIELD = "UPDATE SYS_BUSINESS_METADATA_MAP SET DISPLAY_WIDTH=?, INPUTWIDTH=?, INPUTHEIGHT=?, HTML_INNER=?, DISPLAY_SQL=? WHERE ID=?";
+  private static final String UPDATE_FIELD = "UPDATE SYS_BUSINESS_METADATA_MAP SET DISPLAY_WIDTH=?, INPUTWIDTH=?, INPUTHEIGHT=? WHERE ID=?";
 
   public void updateFields(Connection conn, List<Field> fieldList) throws SQLException {
     PreparedStatement ps = null;
     ps = conn.prepareStatement(UPDATE_FIELD);
     try {
       for (Field field : fieldList) {
-        int updateCount = DBUtil.executeUpdate(ps, field.getDisplayWidth(), field.getInputWidth(), field.getInputHeight(), field.getHtmlInner(),
-                field.getDisplaySql(), field.getId());
+        int updateCount = DBUtil.executeUpdate(ps, field.getDisplayWidth(), field.getInputWidth(), field.getInputHeight(), field.getId());
         if (updateCount != 1) {
           throw new RuntimeException("字段信息更新失败! " + field);
         }

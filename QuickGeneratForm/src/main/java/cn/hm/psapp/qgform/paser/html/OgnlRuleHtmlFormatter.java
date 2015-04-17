@@ -1,5 +1,6 @@
 package cn.hm.psapp.qgform.paser.html;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -67,25 +68,37 @@ public class OgnlRuleHtmlFormatter {
 
     OgnlContext context = new OgnlContext();
 
+    // 将所有下表存入集合.
+    List<Integer> fieldIndexArray = new ArrayList<Integer>(fieldList.size());
+    for (int i = 0; i < fieldList.size(); i++) {
+      fieldIndexArray.add(i);
+    }
+
     // 遍历所有单元格，拼凑表格.
-    for (int i = 0; fieldList.size() > 0; i++) {
+    for (int i = 0; fieldIndexArray.size() > 0; i++) {
+      int index = i % fieldIndexArray.size();
+
+      // 存入Context.
+      Field field = fieldList.get(fieldIndexArray.get(index));
+      putFieldToContext(context, field);
       context.put("col", curCol);
 
-      Field field = fieldList.get(i % fieldList.size());
-      putFieldToContext(context, field);
-
+      // 匹配HTML.
       Map<String, Object> tdMap = tdMatch(context);
       String titleHtml = (String) tdMap.get("titleHtml");
       String fieldHtml = (String) tdMap.get("fieldHtml");
       int colspan = (int) tdMap.get("colspan");
 
+      // 若不超界则加入HTML，否则换行.
       if (curCol + colspan + 1 <= INIT_COL_NUM) {
         rowHtml.append(replaceMatch(titleHtml, field.getFieldTitle()));
         rowHtml.append(replaceMatch(fieldHtml, "[@" + field.getFieldName() + "]"));
 
+        // 移除下标.
+        fieldIndexArray.remove(index);
+
         // 计算与换行.
         curCol = curCol + colspan + 1;
-        fieldList.remove(i % fieldList.size());
         if (curCol == INIT_COL_NUM) {
           nextRow = true;
         }
@@ -94,7 +107,7 @@ public class OgnlRuleHtmlFormatter {
       }
 
       // 换行或结束时，进行此操作.
-      if (nextRow || fieldList.size() == 0) {
+      if (nextRow || fieldIndexArray.size() == 0) {
         // 补充空格.
         putFieldToContext(context, null);
         while (INIT_COL_NUM - curCol > 0) {
@@ -130,12 +143,14 @@ public class OgnlRuleHtmlFormatter {
       context.put("width", null);
       context.put("type", null);
       context.put("control", null);
+      context.put("length", null);
     } else {
       context.put("name", field.getFieldName());
       context.put("title", field.getFieldTitle());
       context.put("width", field.getInputWidth());
       context.put("type", field.getFieldType());
       context.put("control", field.getDisplayType());
+      context.put("length", field.getFieldLength());
     }
   }
 

@@ -5,6 +5,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
+import ognl.Ognl;
+import ognl.OgnlContext;
+import ognl.OgnlException;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -45,7 +49,7 @@ public class FieldControlFormatTest {
   @Test
   public void testFormat2() {
     ExpressMatchFieldWidthFormat format = new ExpressMatchFieldWidthFormat();
-    Form form = reader.read("ff287ac9bc57b4b1147b5dbd4b4212f4");
+    Form form = reader.read("42e5d26e59006ba60c22c7420f82ae20");
     format.format(form);
     System.out.println(form);
   }
